@@ -6,7 +6,7 @@
 #include <avr/power.h>
 #endif
 
-#define PIN            4  //enspricht D2 auf Wemos ESP
+#define PIN            D2  //enspricht D2 auf Wemos ESP
 
 #define NUMPIXELS      300
 
