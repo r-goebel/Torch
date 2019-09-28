@@ -1,6 +1,6 @@
 #include <Adafruit_NeoPixel.h>
 #include "font.h"
-
+typedef uint32_t color32_t;
 // Pattern types supported:
 enum  pattern { NONE, RAINBOW_CYCLE, THEATER_CHASE, COLOR_WIPE, SCANNER, FADE, RANDOM_FADE, SMOOTH, ICON, TEXT, RANDOM_FADE_SINGLE, PLASMA, FILL, RANDOM };
 // Patern directions supported:

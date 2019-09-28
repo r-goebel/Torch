@@ -19,7 +19,7 @@ int program=0;
 NeoPatterns strip = NeoPatterns(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800, &StripComplete);
 //Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMPIXELS, Pixel_PIN, NEO_GRB + NEO_KHZ800);
 
-Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(8, 8, PIN,
+Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(16, 16, PIN,
                             NEO_MATRIX_TOP  + NEO_MATRIX_RIGHT +
                             NEO_MATRIX_ROWS + NEO_MATRIX_PROGRESSIVE,
                             NEO_GRB            + NEO_KHZ800);
@@ -36,7 +36,8 @@ void setup() {
   matrix.begin();
   strip.setBrightness(10);
   matrix.setBrightness(10);
-  strip.RandomFade(); //Default effect
+  //strip.RandomFade(); //Default effect
+  strip.Fire();
   strip.show();
   matrix.show();
 }

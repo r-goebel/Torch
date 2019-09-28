@@ -723,3 +723,4 @@ uint32_t NeoPatterns::parseColor(String value) {
   }
   return 0;
 }
+
