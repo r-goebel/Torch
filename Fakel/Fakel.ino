@@ -1,6 +1,7 @@
 //Board: Wemos D1 R2 & mini
 //Upload speed:115200
 
+#include <Bounce2.h>
 #include <Adafruit_NeoPixel.h>
 #include "Adafruit_NeoMatrix.h"
 #include <Adafruit_GFX.h>
@@ -15,6 +16,8 @@
 #define NUMPIXELS      300
 
 int program=0;
+int pinvalue;
+Bounce debouncer = Bounce();
 
 NeoPatterns strip = NeoPatterns(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800, &StripComplete);
 //Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMPIXELS, Pixel_PIN, NEO_GRB + NEO_KHZ800);
@@ -31,27 +34,36 @@ void setup() {
 #endif
 
   pinMode(PRO_PIN,INPUT_PULLUP);
+  debouncer.attach(PRO_PIN); //zum entprellen des Schalters
+  debouncer.interval(10); // interval in ms
   
   strip.begin(); // This initializes the NeoPixel library.
   matrix.begin();
   strip.setBrightness(10);
   matrix.setBrightness(10);
-  //strip.RandomFade(); //Default effect
-  strip.Fire();
+  strip.RainbowCycle(5);//Default effect
   strip.show();
   matrix.show();
 }
 
 
 void loop() {  
+  debouncer.update();
   strip.Update();
-  //if (digitalRead(PRO_PIN)==LOW){ //Prüfe, ob Taster zur Programm wahl gedrückt wurde/gedrückt ist
-    //program = program + 1;  //wenn ja, ein programm weiter
-    //selectProgram(program); //und dann programm einschalten
-  //} 
-  //if (program ==3){
-    //program == 0;
-  //}//wenn nein, einfach weiter
+  if (pinvalue != debouncer.read()){ //prüfe ob Pin status sich geändert hat
+    pinvalue = debouncer.read();     // wenn ja, gespeicherten Status überschreiben
+    if (pinvalue == LOW){           //Prüfe, ob Pin Status LOw, also Taster gedrückt
+      program = program + 1;        //wenn ja, ein programm weiter
+      selectProgram(program);       //und dann programm einschalten
+    } 
+    if (program >= 10){             //wenn maximale Pogrammzahl erreicht, wieder vorne Anfangen
+      program = 0;
+    }//wenn nein, einfach weiter
+  }
+  Serial.print("program");          //zum debuggen
+  Serial.print(program);
+  Serial.print("Pin");
+  Serial.println(pinvalue);
 }
 
 void selectProgram(int program) {
@@ -79,7 +91,7 @@ void selectProgram(int program) {
   else if (program ==8){
     strip.Plasma(); //läuft nur auf den ersten ca 64 pixeln
   }
-  else {
+  else if (program ==9){
     strip.RandomFade();
   }
 }
