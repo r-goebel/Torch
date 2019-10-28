@@ -3,9 +3,9 @@
 
 #include <Bounce2.h>
 #include <Adafruit_NeoPixel.h>
-#include "Adafruit_NeoMatrix.h"
+#include <Adafruit_NeoMatrix.h>
 #include <Adafruit_GFX.h>
-#include "NeoPatterns.h"  //includes several Patterns, which can be used instead of codeing it 
+#include "NeoPatterns.h"  //includes several Patterns, which can be
 #ifdef __AVR__
 #include <avr/power.h>
 #endif
@@ -19,7 +19,7 @@ int program=0;
 int pinvalue;
 Bounce debouncer = Bounce();
 
-NeoPatterns strip = NeoPatterns(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800, &StripComplete);
+NeoPatterns strip = NeoPatterns(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 //Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMPIXELS, Pixel_PIN, NEO_GRB + NEO_KHZ800);
 
 Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(16, 16, PIN,
@@ -65,14 +65,15 @@ void loop() {
   Serial.print("Pin");
   Serial.println(pinvalue);
 }
+file:///home/rebecca/Arduino/libraries/NeoPatterns/src/MatrixNeoPatterns.h
 
 void selectProgram(int program) {
   if (program == 1){
     strip.RainbowCycle(3);
   }
-  else if (program == 2){
-    strip.TheaterChase(strip.Color(random(0,255), random(0,255), random(0,255)), strip.Color(random(0,255), random(0,255), random(0,255)), 100); //Zufallsfarben
-  }
+  //else if (program == 2){
+    //strip.TheaterChase(strip.Color(random(0,255), random(0,255), random(0,255)), strip.Color(random(0,255), random(0,255), random(0,255)), 100); //Zufallsfarben
+  //}
   else if (program ==3){
     for (int i=0; i<=NUMPIXELS; i++){
       strip.setPixelColor(i,strip.Color(0,0,0));
@@ -80,30 +81,22 @@ void selectProgram(int program) {
     strip.show();
     strip.ColorWipe(strip.Color(random(0,255), random(0,255), random(0,255)), 50); //Zufallsfarbe, pixel werden nach einander eingeschaltet, wenn durchgelaufen wieder von vorne anfangen
   }
-  else if (program == 4){
-    strip.Scanner(strip.Color(255, 0, 0), 20, true); //dreier Schlange rennt durch
-  }
+  //else if (program == 4){
+    //strip.Scanner(strip.Color(255, 0, 0), 20, true); //dreier Schlange rennt durch
+  //}
   else if (program ==5){
     strip.Fade(strip.Color(random(0,255), random(0,255), random(0,255)), strip.Color(random(0,255), random(0,255), random(0,255)), 200, 100); 
   }
-  else if (program == 6){
-    strip.RandomFadeSingle();
-  }
-  else if (program ==7){
-    strip.Smooth(16, 80, 50, 40);
-  }
-  else if (program ==8){
-    strip.Plasma(); //läuft nur auf den ersten ca 64 pixeln
-  }
-  else if (program ==9){
-    strip.RandomFade();
-  }
-}
-
-void StripComplete() {
-  if (false)
-  {
-    strip.IconComplete();
-  }
-  return;
+  //else if (program == 6){
+    //strip.RandomFadeSingle();
+  //}
+  //else if (program ==7){
+    //strip.Smooth(16, 80, 50, 40);
+  //}
+  //else if (program ==8){
+   // strip.Plasma(); //läuft nur auf den ersten ca 64 pixeln
+  //}
+  //else if (program ==9){
+    //strip.RandomFade();
+  //}
 }
