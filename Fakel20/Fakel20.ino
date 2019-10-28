@@ -27,6 +27,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   FadeInOut(255, 0, 0); // red
   FadeInOut(0, 255, 0); // green
+  CylonBounce(255, 0, 0, 4, 10, 50);
 
 }
 
@@ -60,4 +61,36 @@ void FadeInOut(byte red, byte green, byte blue){
   }
 }
 
-//******
+//******Cyclon/Scanner
+void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay){
+
+  for(int k = 0; k < NumPixel-EyeSize-2; k++) {
+    for (int i = 0; i<=NumPixel; i++){
+      strip.setPixelColor(i,0,0,0);
+    }
+    strip.setPixelColor(k, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      strip.setPixelColor(k+j, red, green, blue);
+    }
+    strip.setPixelColor(k+EyeSize+1, red/10, green/10, blue/10);
+    strip.show();
+    delay(SpeedDelay);
+  }
+
+  delay(ReturnDelay);
+
+  for(int k = NumPixel-EyeSize-2; k > 0; k--) {
+    for (int i = 0; i<=NumPixel; i++){
+      strip.setPixelColor(i,0,0,0);
+    }
+    strip.setPixelColor(k, red/10, green/10, blue/10);
+    for(int j = 1; j <= EyeSize; j++) {
+      strip.setPixelColor(k+j, red, green, blue);
+    }
+    strip.setPixelColor(k+EyeSize+1, red/10, green/10, blue/10);
+    strip.show();
+    delay(SpeedDelay);
+  }
+ 
+  delay(ReturnDelay);
+}
