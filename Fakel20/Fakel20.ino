@@ -34,8 +34,9 @@ void loop() {
   //rainbowCycle(20);
   //theaterChase(255,0,0,50);
   //theaterChaseRainbow(50);
-  Fire(); //noch anpassen
+  //Fire(); //noch anpassen
   //meteorRain(255,255,255,4,64,true,30); //noch anpassen
+  Rain(false);
 }
 
 void setAll(byte red, byte green, byte blue){
@@ -46,7 +47,7 @@ void setAll(byte red, byte green, byte blue){
 
 //********************EFFECTS********************
 
-//******Fade in and out --Über Helligkeit???
+//******Fade in and out
 
 void FadeInOut(byte red, byte green, byte blue){
   float r, g, b;
@@ -342,4 +343,41 @@ void fadeToBlack(int ledNo, byte fadeValue) {
     b=(b<=10)? 0 : (int) b-(b*fadeValue/256);
    
     strip.setPixelColor(ledNo, r,g,b);
+}
+
+//******Rain
+    
+void Rain(boolean WindOn){
+  int ChanceNew = 145;
+  int Cooling = 75;
+  int cooldown;
+  byte rain[NumPixel];
+  int wind = 0;
+
+  if (WindOn){
+    wind=1;
+  }
+  
+  //Copy each Pixel to next row
+  for(int i = NumPixel-1;i > 15;i--){
+    rain[i] = rain[i-16 + wind];
+  }
+
+  //delete first row
+  for (int i=0; i<17; i++){
+    rain[i] = 0;
+  }
+
+  //seed some new drops in first row
+    if( random(255) < ChanceNew ) {
+    int i = random(0,15);
+    rain[i] = 255;
+    }
+
+  //set pixel to desired color
+  for (int i = 0; i<NumPixel; i++){
+    strip.setPixelColor(i, 0, rain[i]/2, rain[i]);
+  }
+  strip.show();
+  delay(30);
 }
