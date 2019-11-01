@@ -34,7 +34,7 @@ void loop() {
   //rainbowCycle(20);
   //theaterChase(255,0,0,50);
   //theaterChaseRainbow(50);
-  Fire(200,200,25); //noch anpassen
+  Fire(); //noch anpassen
   //meteorRain(255,255,255,4,64,true,30); //noch anpassen
 }
 
@@ -226,13 +226,24 @@ void theaterChaseRainbow(int SpeedDelay) {
   }
 }
 
-//******Fire //(Cooling = 55,Sparking = 120,Delay = 15)
-void Fire(int Cooling, int Sparking, int SpeedDelay) {
-  //static byte heat[NumPixel];
+//******Fire 
+//Based on https://github.com/FastLED/FastLED/blob/master/examples/Fire2012/Fire2012.ino
+// Recommended 30-100 frames per second, meaning an interframe delay of about 10-35 milliseconds.
+// COOLING: How much does the air cool as it rises?
+//          Less cooling = taller flames.  More cooling = shorter flames.
+//          Default 50, suggested range 20-100 
+// SPARKING: What chance (out of 255) is there that a new spark will be lit?
+//           Higher chance = more roaring fire.  Lower chance = more flickery fire.
+//           Default 120, suggested range 50-200.
+
+void Fire() {
+  int Cooling = 75;
+  int Sparking = 145;
+  int SpeedDelay = 15;
   byte heat[NumPixel];
   int cooldown;
  
-  // Step 1.  Cool down every cell a little (Reihenfolge unwichtig, da einfach alle abgekühlt werden)
+  // Step 1.  Cool down every cell a little
   for( int i = 0; i < NumPixel; i++) {
     cooldown = random(0, ((Cooling * 10) / NumPixel) + 2);
    
@@ -243,14 +254,19 @@ void Fire(int Cooling, int Sparking, int SpeedDelay) {
     }
   }
  
-  // Step 2.  Heat from each cell drifts 'up' and diffuses a little (Wäre so groß Mittelwert aus Pixel in Reihe darunter, sowie der links und rechts davon)
-  for( int k= 0; k <= NumPixel-17; k++) {
-    heat[k] = ((heat[k + 16] + heat[k + 15] + heat[k + 17]) / 3)*0.95;
+  // Step 2.  Heat from each cell drifts 'up' and diffuses a little 
+  for( int k= 1; k <= NumPixel-17; k++) {
+    if (heat[k+16] == 0){
+      heat[k] = 0;
+    }
+    else{
+        heat[k] = ((heat[k + 16] + heat[k + 15] + heat[k + 17]) / 3)*0.95;
+    }
   }
    
-  // Step 3.  Randomly ignite new 'sparks' near the bottom (near bottom heißt hier auf den ersten drei Reihen, also Pixel 300-252)
+  // Step 3.  Randomly ignite new 'sparks' near the bottom (near bottom = first four rows --> Pixel 300-252)
   if( random(255) < Sparking ) {
-    int y = random(268,300);
+    int y = random(252,300);
     //heat[y] = heat[y] + random(160,255);
     heat[y] = random(160,255);
   }
