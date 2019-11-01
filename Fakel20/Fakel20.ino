@@ -34,8 +34,8 @@ void loop() {
   //rainbowCycle(20);
   //theaterChase(255,0,0,50);
   //theaterChaseRainbow(50);
-  //Fire(55,120,15); //noch anpassen
-  meteorRain(255,255,255,4,64,true,30); //noch anpassen
+  Fire(200,200,25); //noch anpassen
+  //meteorRain(255,255,255,4,64,true,30); //noch anpassen
 }
 
 void setAll(byte red, byte green, byte blue){
@@ -226,13 +226,13 @@ void theaterChaseRainbow(int SpeedDelay) {
   }
 }
 
-//******Fire
+//******Fire //(Cooling = 55,Sparking = 120,Delay = 15)
 void Fire(int Cooling, int Sparking, int SpeedDelay) {
   //static byte heat[NumPixel];
   byte heat[NumPixel];
   int cooldown;
  
-  // Step 1.  Cool down every cell a little
+  // Step 1.  Cool down every cell a little (Reihenfolge unwichtig, da einfach alle abgekühlt werden)
   for( int i = 0; i < NumPixel; i++) {
     cooldown = random(0, ((Cooling * 10) / NumPixel) + 2);
    
@@ -243,20 +243,20 @@ void Fire(int Cooling, int Sparking, int SpeedDelay) {
     }
   }
  
-  // Step 2.  Heat from each cell drifts 'up' and diffuses a little
-  for( int k= NumPixel - 1; k >= 2; k--) {
-    heat[k] = (heat[k - 1] + heat[k - 2] + heat[k - 2]) / 3;
+  // Step 2.  Heat from each cell drifts 'up' and diffuses a little (Wäre so groß Mittelwert aus Pixel in Reihe darunter, sowie der links und rechts davon)
+  for( int k= 0; k <= NumPixel-17; k++) {
+    heat[k] = ((heat[k + 16] + heat[k + 15] + heat[k + 17]) / 3)*0.95;
   }
    
-  // Step 3.  Randomly ignite new 'sparks' near the bottom
+  // Step 3.  Randomly ignite new 'sparks' near the bottom (near bottom heißt hier auf den ersten drei Reihen, also Pixel 300-252)
   if( random(255) < Sparking ) {
-    int y = random(7);
-    heat[y] = heat[y] + random(160,255);
-    //heat[y] = random(160,255);
+    int y = random(268,300);
+    //heat[y] = heat[y] + random(160,255);
+    heat[y] = random(160,255);
   }
 
   // Step 4.  Convert heat to LED colors
-  for( int j = 0; j < NumPixel; j++) {
+  for( int j = 0; j <=NumPixel; j++) {
     setPixelHeatColor(j, heat[j] );
   }
 
