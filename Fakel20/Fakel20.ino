@@ -18,7 +18,7 @@ void setup() {
   Serial.begin(115200);
 
   strip.begin();
-  strip.setBrightness(10);
+  strip.setBrightness(5);
   strip.show();
 
 }
@@ -26,7 +26,6 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   //FadeInOut(255, 0, 0); // red
-  //FadeInOut(0, 255, 0); // green
   //CylonBounce(255, 0, 0, 4, 10, 50);
   //Twinkle(255,0,0,10,100,false);
   //TwinkleRandom(20,100,false);
@@ -35,15 +34,8 @@ void loop() {
   //rainbowCycle(20);
   //theaterChase(255,0,0,50);
   //theaterChaseRainbow(50);
-  //Fire(55,120,15);
-  //BouncingBalls(255,0,0,3); 
-
-    //byte colors[3][3] = { {0xff, 0,0},
-    //                    {0xff, 0xff, 0xff},
-    //                    {0   , 0   , 0xff} };
-
-  //BouncingColoredBalls(3, colors);
-  meteorRain(255,255,255,10,64,true,30); 
+  //Fire(55,120,15); //noch anpassen
+  meteorRain(255,255,255,4,64,true,30); //noch anpassen
 }
 
 void setAll(byte red, byte green, byte blue){
@@ -68,7 +60,7 @@ void FadeInOut(byte red, byte green, byte blue){
     delay(1);
   }
      
-  for(int j = 255; j >= 0; j=j-1) {
+  for(int j = 255; j >= 0; j=j-2) {
     r = (j/255.0)*red;
     g = (j/255.0)*green;
     b = (j/255.0)*blue;
@@ -290,120 +282,27 @@ void setPixelHeatColor (int Pixel, byte temperature) {
   }
 }
 
-//******Bouncing Ball
-void BouncingBalls(byte red, byte green, byte blue, int BallCount) {
-  float Gravity = -9.81;
-  int StartHeight = 1;
- 
-  float Height[BallCount];
-  float ImpactVelocityStart = sqrt( -2 * Gravity * StartHeight );
-  float ImpactVelocity[BallCount];
-  float TimeSinceLastBounce[BallCount];
-  int   Position[BallCount];
-  long  ClockTimeSinceLastBounce[BallCount];
-  float Dampening[BallCount];
- 
-  for (int i = 0 ; i < BallCount ; i++) {  
-    ClockTimeSinceLastBounce[i] = millis();
-    Height[i] = StartHeight;
-    Position[i] = 0;
-    ImpactVelocity[i] = ImpactVelocityStart;
-    TimeSinceLastBounce[i] = 0;
-    Dampening[i] = 0.90 - float(i)/pow(BallCount,2);
-  }
 
-  while (true) {
-    for (int i = 0 ; i < BallCount ; i++) {
-      TimeSinceLastBounce[i] =  millis() - ClockTimeSinceLastBounce[i];
-      Height[i] = 0.5 * Gravity * pow( TimeSinceLastBounce[i]/1000 , 2.0 ) + ImpactVelocity[i] * TimeSinceLastBounce[i]/1000;
- 
-      if ( Height[i] < 0 ) {                      
-        Height[i] = 0;
-        ImpactVelocity[i] = Dampening[i] * ImpactVelocity[i];
-        ClockTimeSinceLastBounce[i] = millis();
- 
-        if ( ImpactVelocity[i] < 0.01 ) {
-          ImpactVelocity[i] = ImpactVelocityStart;
-        }
-      }
-      Position[i] = round( Height[i] * (NumPixel - 1) / StartHeight);
-    }
- 
-    for (int i = 0 ; i < BallCount ; i++) {
-      strip.setPixelColor(Position[i],red,green,blue);
-    }
-   
-    strip.show();
-    setAll(0,0,0);
-  }
-}
-
-//******Multi Color Bouncing Ball
-void BouncingColoredBalls(int BallCount, byte colors[][3]) {
-  float Gravity = -9.81;
-  int StartHeight = 1;
- 
-  float Height[BallCount];
-  float ImpactVelocityStart = sqrt( -2 * Gravity * StartHeight );
-  float ImpactVelocity[BallCount];
-  float TimeSinceLastBounce[BallCount];
-  int   Position[BallCount];
-  long  ClockTimeSinceLastBounce[BallCount];
-  float Dampening[BallCount];
- 
-  for (int i = 0 ; i < BallCount ; i++) {  
-    ClockTimeSinceLastBounce[i] = millis();
-    Height[i] = StartHeight;
-    Position[i] = 0;
-    ImpactVelocity[i] = ImpactVelocityStart;
-    TimeSinceLastBounce[i] = 0;
-    Dampening[i] = 0.90 - float(i)/pow(BallCount,2);
-  }
-
-  while (true) {
-    for (int i = 0 ; i < BallCount ; i++) {
-      TimeSinceLastBounce[i] =  millis() - ClockTimeSinceLastBounce[i];
-      Height[i] = 0.5 * Gravity * pow( TimeSinceLastBounce[i]/1000 , 2.0 ) + ImpactVelocity[i] * TimeSinceLastBounce[i]/1000;
- 
-      if ( Height[i] < 0 ) {                      
-        Height[i] = 0;
-        ImpactVelocity[i] = Dampening[i] * ImpactVelocity[i];
-        ClockTimeSinceLastBounce[i] = millis();
- 
-        if ( ImpactVelocity[i] < 0.01 ) {
-          ImpactVelocity[i] = ImpactVelocityStart;
-        }
-      }
-      Position[i] = round( Height[i] * (NumPixel - 1) / StartHeight);
-    }
- 
-    for (int i = 0 ; i < BallCount ; i++) {
-      strip.setPixelColor(Position[i],colors[i][0],colors[i][1],colors[i][2]);
-    }
-   
-    strip.show();
-    setAll(0,0,0);
-  }
-}
-
-//******Meteor Rain
+//******Meteor Rain //(red=255,green=255,blue=255,size=4,TrailDecay=64,RandomDecay=true,SpeedDelay=30) (Decay=Zerfall)
 void meteorRain(byte red, byte green, byte blue, byte meteorSize, byte meteorTrailDecay, boolean meteorRandomDecay, int SpeedDelay) {  
   setAll(0,0,0);
- 
-  for(int i = 0; i < NumPixel+NumPixel; i++) {
+
+  int start = random(15);
+     
+  for(int i = start; i < NumPixel*2; i=i+16) { //NumPixel*2, damit genug zeit zum Ausfadenist
    
    
     // fade brightness all LEDs one step
-    for(int j=0; j<NumPixel; j++) {
-      if( (!meteorRandomDecay) || (random(10)>5) ) {
+    for(int j=start; j<NumPixel; j=j+16) {
+      if( (!meteorRandomDecay) || (random(10)>5) ) { //wenn nicht Zufälliger Zerfall gewählt ist, oder in 50% der Fälle
         fadeToBlack(j, meteorTrailDecay );        
       }
     }
    
     // draw meteor
     for(int j = 0; j < meteorSize; j++) {
-      if( ( i-j <NumPixel) && (i-j>=0) ) {
-        strip.setPixelColor(i-j, red, green, blue);
+      if( ( i < NumPixel) && ((i-j*16)>=0) ) {
+        strip.setPixelColor((i-j*16), red, green, blue);
       }
     }
    
