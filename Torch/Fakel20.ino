@@ -20,7 +20,7 @@ void setup() {
   Serial.begin(115200);
 
   strip.begin();
-  strip.setBrightness(5);
+  strip.setBrightness(10);
   strip.show();
 
 }
@@ -36,10 +36,10 @@ void loop() {
   //rainbowCycle(20);
   //theaterChase(255,0,0,50);
   //theaterChaseRainbow(50);
-  //Fire(); //noch anpassen
-  //meteorRain(255,255,255,4,64,true,30); //noch anpassen
+  Fire(); 
+  //meteorRain(255,255,255,4,64,true,30); 
   //Rain(false);
-  Plasma();
+  //Plasma();
 }
 
 void setAll(byte red, byte green, byte blue){
