@@ -1,7 +1,8 @@
 #include <ESP8266WiFi.h>;
  
 #define ledPin D4
-#define ProgramStringLengthMax 20
+
+byte ProgramStringLengthMax=20;
 
 char programm;
 
