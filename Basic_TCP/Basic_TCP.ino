@@ -2,17 +2,11 @@
  
 #define ledPin D4
 #define bufferSize 10
- 
-const char* ssid = "<>";
-const char* password =  "<>";
-
-int port = 5333;
 
 char programm='initial';
-
-
 long clientMessage = 0;
- 
+
+int port = 5333;
 WiFiServer server(port);
  
 void setup() {
@@ -23,22 +17,7 @@ void setup() {
     
   delay(1000);
 
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
- 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.println("Connecting..");
-  }
- 
-  Serial.print("Connected to WiFi. IP:");
-  Serial.println(WiFi.localIP());
- 
-  server.begin();
-  Serial.print("Connect to IP:");
-  Serial.print(WiFi.localIP());
-  Serial.print("on port");
-  Serial.println(port);
+  WifiSetup();
   
   digitalWrite(ledPin, HIGH);
 }
