@@ -1,18 +1,15 @@
 
 long clientMessage = 0;   //to indicate, which messages were already sent to client
 byte i;
-String incomingMessage;   //stores incoming message of client
-char incomingChar;        //incoming characters of client
-byte programmKnown;
 
 // Checks for user input, and saves to programm array
-char* readDataFromClient(char* programmIn) {
+byte readDataFromClient(byte NumberEffectSelectedIn) {
              
   // if no client is connected, try to connect to a new client
   if (!client.connected()){ 
     clientMessage = 0;
     client = server.available();
-    programm = programmIn;
+    NumberEffectSelected = NumberEffectSelectedIn;
   } 
 
   // if client is connected read data from the connected client
@@ -32,44 +29,51 @@ char* readDataFromClient(char* programmIn) {
 
     //Read message from client
     if (client.available() > 0) {
-        i = 0;
-        incomingMessage = "";   
-        while (client.available() > 0 && i < ProgrammLengthMax) {
+        i = 0;  
+        char incomingMessage[EffectLengthMax];  
+        while (client.available() > 0 && i < EffectLengthMax) {
           delay(10);     
           
-          incomingChar = client.read();
-          
-          if (incomingMessage == "\cr" || incomingMessage == "\r"|| incomingMessage == "\n"){
-            incomingMessage += '\0';                    //Adds character to string
-            i = ProgrammLengthMax;
-            Serial.println("check");
-            client.flush();
-          }
-          incomingMessage += incomingChar;
+          incomingMessage[i] = client.read();
+
+          if (incomingMessage[i] == '\n' || incomingMessage[i] == '\r'){
+            incomingMessage[i] = '\0';                    //delets last character
+            i = EffectLengthMax;
+          } 
           i++;
-       }                    
+        }                     
       
       //react to client message
-      if (incomingMessage.startsWith("help")){                 //Compares to strings
-        client.println("Available effects:\n Fade,\n Cyclon,\n Twinkle,\n TwinkleRandom,\n Sparkle,\n ColorWipe,\n RainbowCycle,\n TheaterChase,\n TheaterChaseRainbow,\n Fire,\n MeteorRain,\n Rain,\n Plasma");
+      if (strcmp(incomingMessage, "help") == 0){                 //Compares to strings
+        Serial.println("Client is asking for help.");
+        client.println("Available effects:");
+        for (i=0;i<NumberEffects;i++){
+          client.println(effectList[i]);
+        }
         clientMessage = 1;
       }else {
-        programmNew = TranslateString(incomingMessage);
-        if (programmNew == "Init"){
-          client.println("Effect unknown.");
-          Serial.println("Effect unknown.");
-          programm = programmIn;
-        } else {
-          client.println("Succesfully selected effect.");
-          Serial.println("Succesfully selected effect.");
-          incomingMessage.toCharArray(programmNew,incomingMessage.length());
-          Serial.print("programmNew: ");
-          Serial.println(programmNew);
-        }
+          int Match = 0;
+          for (i=0;i<NumberEffects;i++){
+            if (strcmp(incomingMessage,effectList[i]) == 0){
+              client.println("Succesfully selected effect.");
+              Serial.println("Succesfully selected effect.");
+              effect = effectList[i];
+              NumberEffectSelected = i;
+              Serial.print("effect: ");
+              Serial.println(effect);
+              Match = 1;
+            }
+          }
+          if (Match == 0){
+            client.println("Effect unknown.");
+            Serial.println("Effect unknown.");
+            NumberEffectSelected = NumberEffectSelectedIn;
+          } 
+          
           delay(10);
           clientMessage = 1;
       }
     }
   }
-    return programm;
+    return NumberEffectSelected;
 }

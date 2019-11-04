@@ -1,32 +1,46 @@
 
-byte ProgrammSelection (char* programm){
-  if (programm == "Fade"){
+void EffectSelection (byte NumberEffectSelected){
+  if (NumberEffectSelected == 0){
     FadeInOut(255, 0, 0); // red
-  } else if (programm == "Cyclon"){
+    
+  } else if (NumberEffectSelected == 1){
     CylonBounce(255, 0, 0, 4, 10, 50);
-  } else if (programm == "Twinkle"){
+    
+  } else if (NumberEffectSelected == 2){
     Twinkle(255,0,0,10,100,false);
-  }else if (programm == "TwinkleRandom"){
+    
+  }else if (NumberEffectSelected == 3){
     TwinkleRandom(20,100,false);
-  }else if (programm == "Sparkle"){
+    
+  }else if (NumberEffectSelected == 4){
     Sparkle(255,255,255,0);
-  }else if (programm == "ColorWipe"){
+    
+  }else if (NumberEffectSelected == 5){
     colorWipe(0,255,0,50);
-  }else if (programm == "RainbowCycle"){
+    
+  }else if (NumberEffectSelected == 6){
     rainbowCycle(20);
-  }else if (programm == "TheaterChase"){
+    
+  }else if (NumberEffectSelected == 7){
     theaterChase(255,0,0,50);
-  }else if (programm == "TheaterChaseRainbow"){
+    
+  }else if (NumberEffectSelected == 8){
     theaterChaseRainbow(50);
-  }else if (programm == "Fire"){
+    
+  }else if (NumberEffectSelected == 9){
     Fire(); 
-  }else if (programm == "MeteorRain"){
+    
+  }else if (NumberEffectSelected == 10){
     meteorRain(255,255,255,4,64,true,30); 
-  }else if (programm == "Rain"){
+    
+  }else if (NumberEffectSelected == 11){
     Rain(false);
-  }else if (programm == "Plasma"){
+    
+  }else if (NumberEffectSelected == 12){
     Plasma();
-  }else{
+    
+  }else{ //Just to be sure
     Twinkle(255,0,0,10,100,false);
+    
   }
 }

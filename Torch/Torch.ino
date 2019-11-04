@@ -14,10 +14,12 @@ int NumPixel = 300;
 int ROWS = 19;
 int COLS = 16;
 
-byte ProgrammLengthMax=20;
-
-char* programm;
-char* programmNew;
+byte EffectLengthMax=20;
+char* effect;
+char* effectList[] = {"Fade","Cyclon","Twinkle","TwinkleRandom","Sparkle","ColorWipe","RainbowCycle","TheaterChase","TheaterChaseRainbow","Fire","MeteorRain","Rain","Plasma"};
+int NumberEffects = 13;
+byte NumberEffectSelected = 9;
+byte NumberEffectSelectedNew;
 
 int port = 5333;
 WiFiServer server(port);
@@ -40,12 +42,10 @@ void setup() {
 WiFiClient client;
 
 void loop() {
-  programm = readDataFromClient(programm);
-  ProgrammSelection(programm);
-}
-
-void setAll(byte red, byte green, byte blue){
-  for (int i = 0; i<=NumPixel; i++){
-    strip.setPixelColor(i,red,green,blue);
+  NumberEffectSelectedNew = readDataFromClient(NumberEffectSelected);
+  if (NumberEffectSelectedNew != NumberEffectSelected){
+    NumberEffectSelectedNew = NumberEffectSelected;
+    setAll(0,0,0);
   }
+  EffectSelection(NumberEffectSelected);
 }

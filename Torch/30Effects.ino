@@ -1,4 +1,11 @@
+
 //********************EFFECTS********************
+
+void setAll(byte red, byte green, byte blue){
+  for (int i = 0; i<=NumPixel; i++){
+    strip.setPixelColor(i,red,green,blue);
+  }
+}
 
 //******Fade in and out
 
