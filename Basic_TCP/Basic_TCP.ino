@@ -2,9 +2,12 @@
  
 #define ledPin D4
 
-byte ProgramStringLengthMax=20;
+byte EffectLengthMax=20;
 
-char programm;
+char* effect;
+char* effectList[] = { "Fade", "Cyclon", "Twinkle", "TwinkleRandom", "Sparkle", "ColorWipe", "RainbowCycle", "TheaterChase", "TheaterChaseRainbow", "Fire", "MeteorRain", "Rain", "Plasma"};
+int NumberEffects = 13;
+byte NumberEffectSelected;
 
 int port = 5333;
 WiFiServer server(port);
@@ -28,8 +31,7 @@ void loop(void) {
        
   digitalWrite(ledPin, HIGH);
   delay(500);
-
-  programm = readDataFromClient();
+  NumberEffectSelected = readDataFromClient(NumberEffectSelected);
  
   digitalWrite(ledPin, LOW);
   delay(500);
