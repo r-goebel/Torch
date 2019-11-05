@@ -1,7 +1,10 @@
 
-void EffectSelection (byte NumberEffectSelected){
-  if (NumberEffectSelected == 0){
-    FadeInOut(255, 0, 0); // red
+void EffectSelection (){
+  if (NumbersSelected[0][0] == 0){
+    byte r = colorListRGB[0][NumbersSelected[0][1]];
+    byte g = colorListRGB[1][NumbersSelected[0][1]];
+    byte b = colorListRGB[2][NumbersSelected[0][1]];
+    FadeInOut(r, g, b); 
     
   } else if (NumberEffectSelected == 1){
     CylonBounce(255, 0, 0, 4, 10, 50);

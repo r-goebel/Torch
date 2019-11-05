@@ -18,8 +18,25 @@ byte EffectLengthMax=20;
 char* effect;
 char* effectList[] = {"Fade","Cyclon","Twinkle","TwinkleRandom","Sparkle","ColorWipe","RainbowCycle","TheaterChase","TheaterChaseRainbow","Fire","MeteorRain","Rain","Plasma"};
 int NumberEffects = 13;
-byte NumberEffectSelected = 9;
-byte NumberEffectSelectedNew;
+int NumberEffectSelected = 9;
+int NumberEffectSelectedNew = 9;
+bool ChangeEffect = 0;
+
+int colorDefault[] = {0, 128, 255};
+char* colorList[] ={"red","green","blue"};
+int NumberColors = 3;
+int colorListRGB[][3] = {{255,0,0},
+                            {0,255,0},
+                            {0,0,255}};
+int ChangeColor = 0;
+
+int NumbersSelected[][2] = {9,0};;
+int NumbersSelectedNew[][2] = {9,0};
+
+int SelectedEffect;
+int SelectedColor;
+
+
 
 int port = 5333;
 WiFiServer server(port);
@@ -42,10 +59,13 @@ void setup() {
 WiFiClient client;
 
 void loop() {
-  NumberEffectSelectedNew = readDataFromClient(NumberEffectSelected);
-  if (NumberEffectSelectedNew != NumberEffectSelected){
-    NumberEffectSelectedNew = NumberEffectSelected;
+  ChangeEffect = readDataFromClient();
+  if (ChangeEffect){
     setAll(0,0,0);
+    ChangeEffect = 0;
+    ChangeColor = 0;
   }
-  EffectSelection(NumberEffectSelected);
+  SelectedColor = NumbersSelected[0][1];
+  SelectedEffect = NumbersSelected[0][0];
+  EffectSelection();
 }
