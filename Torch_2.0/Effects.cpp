@@ -3,8 +3,8 @@
 //#include <Adafruit_NeoPixel.h>
 #include "Effects.h"
 
-Effects::Effects() :
-  Adafruit_NeoPixel()
+Effects::Effects(uint16_t pixels, uint8_t pin, uint8_t type) :
+  Adafruit_NeoPixel(pixels, pin,type)
 {
 }
 
@@ -16,6 +16,7 @@ void Effects::Update(){
     {
       case Fade_InOut:
         FadeInOutUpdate();
+        break;
       case Rainbow_Cycle:
         rainbowCycleUpdate();
         break;
@@ -42,14 +43,29 @@ void Effects::Increment(){
 
 /******************  Effects  ******************/
 
-void Effects::FadeInOut(byte red, byte green, byte blue){
+void Effects::FadeInOut(uint32_t color1, uint8_t interval, direction dir){
   ActiveEffect = Fade_InOut;
-  
-  
+  Interval = interval;
+  TotalSteps = 256;
+  Index = 0;
+  Color1 = color1;
+  Direction = dir;
 }
 
 void Effects::FadeInOutUpdate(){
-  
+  r = (Index/256.0) * Red(Color1);
+  g = (Index/256.0) * Green(Color1);
+  b = (Index/256.0) * Blue(Color1);
+
+  fill(Color(r,g,b),0,(numPixels()-1));
+
+  if (Index == (TotalSteps-1) && Direction == FORWARD){        //Change direction if highest or lowest color value is reached
+    Direction = REVERSE;
+  } else if (Index == 1 && Direction == REVERSE){
+    Direction = FORWARD;
+  }
+  show();
+  Increment(); 
 }
 
 void Effects::rainbowCycle(uint8_t interval, direction dir){
@@ -80,4 +96,22 @@ uint32_t Effects::Wheel(byte WheelPos){
     WheelPos -= 170;
     return Color(WheelPos * 3, 255 - WheelPos * 3, 0);
   }
+}
+
+// Returns the Red component of a 32-bit color
+uint8_t Effects::Red(uint32_t color)
+{
+  return (color >> 16) & 255;
+}
+
+// Returns the Green component of a 32-bit color
+uint8_t Effects::Green(uint32_t color)
+{
+  return (color >> 8) & 255;
+}
+
+// Returns the Blue component of a 32-bit color
+uint8_t Effects::Blue(uint32_t color)
+{
+  return color & 255;
 }
