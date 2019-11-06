@@ -5,16 +5,16 @@ void SelectEffect (){
   } else if (Selected[0] == 1){
     strip.Cylon(colorListRGB[Selected[1]], 4, 10);
     
-  } else if (Selected[0] == 2){
+  } else if (Selected[0] == 2){ //Twinkle
     strip.Twinkle(colorListRGB[Selected[1]],10,100);
        
-  }else if (Selected[0] == 3){
+  }else if (Selected[0] == 3){ //TwinkleRandom
     strip.Twinkle(colorListRGB[Selected[1]],10,100,1);
     
-  }else if (Selected[0] == 4){
+  }else if (Selected[0] == 4){ //Sparkle
     strip.Sparkle(colorListRGB[Selected[1]],0);
     
-  }else if (Selected[0] == 5){
+  }else if (Selected[0] == 5){ //SparkleRandom
     strip.Sparkle(colorListRGB[Selected[1]],0,1);
   }  
 }
