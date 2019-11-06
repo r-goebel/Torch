@@ -17,8 +17,8 @@ void Effects::Update(){
       case Fade_InOut:
         FadeInOutUpdate();
         break;
-      case Cyclon_Scanner:
-        CyclonUpdate();
+      case Cylon_Scanner:
+        CylonUpdate();
         break;
       case Twinkle_:
         TwinkleUpdate();
@@ -96,8 +96,8 @@ void Effects::FadeInOutUpdate(){
   IncrementChangingDirections(); 
 }
 
-void Effects::Cyclon(uint32_t color1, uint8_t EyeSize, uint8_t interval){
-  ActiveEffect = Cyclon_Scanner;
+void Effects::Cylon(uint32_t color1, uint8_t EyeSize, uint8_t interval){
+  ActiveEffect = Cylon_Scanner;
   Interval_Initial = interval;
   Direction = FORWARD;
   Color1 = color1;
@@ -107,7 +107,7 @@ void Effects::Cyclon(uint32_t color1, uint8_t EyeSize, uint8_t interval){
   Index = 0;
 }
 
-void Effects::CyclonUpdate(){
+void Effects::CylonUpdate(){
 
     clear(); //reset all pixels
     

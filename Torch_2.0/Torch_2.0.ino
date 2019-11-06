@@ -18,12 +18,12 @@ int NumCols = 16;
 Effects strip = Effects(NumPixel, PixelPin, NEO_GRB + NEO_KHZ800);
 
 //Definition of possible effects and colors
-char* effectList[] = {"Fade","Cyclon"}; //,"Twinkle","TwinkleRandom","Sparkle","ColorWipe","RainbowCycle","TheaterChase","TheaterChaseRainbow","Fire","MeteorRain","Rain","Plasma"};
-int NumberEffects = 2; //13;
+char* effectList[] = {"Fade","Cylon","Twinkle", "TwinkleRandom", "Sparkle", "SparkleRandom"};//,"ColorWipe","RainbowCycle","TheaterChase","TheaterChaseRainbow","Fire","MeteorRain","Rain","Plasma"};
+int NumberEffects = 6; //13;
 char* colorList[] ={"red","green","blue"};
-int colorListRGB[][3] = {{255,0,0},
-                         {0,255,0},
-                         {0,0,255}};
+int colorListRGB[3] = {strip.Color(255,0,0),
+                       strip.Color(0,255,0),
+                       strip.Color(0,0,255)};
 int NumberColors = 3; 
 
 //Definition of various variables
@@ -58,11 +58,12 @@ void loop() {
   //client selected new effect: replace effect and color in "Selected", initialize new effect if needed, reset "EffectChange"
   if (EffectChange == 1){
     Serial.println("EffectChange notized");
-    Selected == SelectedNew;
+    Selected[0] = SelectedNew[0];
+    Selected[1] = SelectedNew[1];
     EffectChange = 0;
     strip.clear();
     //Initialization
-    strip.Twinkle(strip.Color(255,0,0), 10, 1000,1);
+    SelectEffect();
   }
   //client did not select anything new or no client is availabel: just update effect
   else{
