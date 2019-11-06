@@ -66,7 +66,8 @@ void Effects::IncrementChangingDirections(){
 
 void Effects::FadeInOut(uint32_t color1, uint8_t interval, direction dir){
   ActiveEffect = Fade_InOut;
-  Interval = interval;
+  Interval_Initial = interval;
+  ReturnDelay = interval;
   TotalSteps = 256;
   Index = 0;
   Color1 = color1;
@@ -80,13 +81,13 @@ void Effects::FadeInOutUpdate(){
 
   fill(Color(r,g,b),0,(numPixels()-1));
 
-  if (Index == (TotalSteps-1) && Direction == FORWARD){        //Change direction if highest or lowest color value is reached
-    Direction = REVERSE;
-  } else if (Index == 1 && Direction == REVERSE){
-    Direction = FORWARD;
-  }
+  //if (Index == (TotalSteps-1) && Direction == FORWARD){        //Change direction if highest or lowest color value is reached
+  //  Direction = REVERSE;
+  //} else if (Index == 1 && Direction == REVERSE){
+  //  Direction = FORWARD;
+  //}
   show();
-  Increment(); 
+  IncrementChangingDirections(); 
 }
 
 void Effects::Cyclon(uint32_t color1, uint8_t EyeSize, int interval){
