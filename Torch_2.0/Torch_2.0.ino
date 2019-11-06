@@ -62,7 +62,7 @@ void loop() {
     EffectChange = 0;
     strip.clear();
     //Initialization
-    strip.FadeInOut(strip.Color(255,0,0), 5);
+    strip.Cyclon(strip.Color(255,0,0),4,10);
   }
   //client did not select anything new or no client is availabel: just update effect
   else{

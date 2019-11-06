@@ -17,6 +17,9 @@ void Effects::Update(){
       case Fade_InOut:
         FadeInOutUpdate();
         break;
+      case Cyclon_Scanner:
+        CyclonUpdate();
+        break;
       case Rainbow_Cycle:
         rainbowCycleUpdate();
         break;
@@ -37,6 +40,24 @@ void Effects::Increment(){
     --Index;
     if (Index <= 0){
       Index = TotalSteps - 1;
+    }
+  }
+}
+
+void Effects::IncrementChangingDirections(){
+  Interval = Interval_Initial;
+  if (Direction == FORWARD){
+    Index++;
+    if (Index > TotalSteps){
+      Direction = REVERSE;
+      Interval = ReturnDelay;
+    }
+  }
+  else { // Direction == REVERSE
+    --Index;
+    if (Index <= 0){
+      Direction = FORWARD;
+      Interval = ReturnDelay;
     }
   }
 }
@@ -66,6 +87,31 @@ void Effects::FadeInOutUpdate(){
   }
   show();
   Increment(); 
+}
+
+void Effects::Cyclon(uint32_t color1, uint8_t EyeSize, int interval){
+  ActiveEffect = Cyclon_Scanner;
+  Interval_Initial = interval;
+  Direction = FORWARD;
+  Color1 = color1;
+  SizeEffect = EyeSize;
+  TotalSteps = numPixels()-SizeEffect-2;
+  ReturnDelay = 5*interval;
+  Index = 0;
+}
+
+void Effects::CyclonUpdate(){
+
+    clear(); //reset all pixels
+    
+    for (int i=Index+1; i<=Index+SizeEffect;i++){   //does not work using "fill"
+      setPixelColor(i,Color1);
+    }
+    setPixelColor(Index, Red(Color1)/10, Green(Color1)/10, Blue(Color1)/10);              //To set one pixel in front and after eye to color/10
+    setPixelColor(Index+SizeEffect+1, Red(Color1)/10, Green(Color1)/10, Blue(Color1)/10);
+      
+    show();
+    IncrementChangingDirections();
 }
 
 void Effects::rainbowCycle(uint8_t interval, direction dir){
