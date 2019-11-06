@@ -6,7 +6,7 @@
 #include <Adafruit_NeoPixel.h>
 
 //Supported effects
-enum effect {Fade_InOut, Cyclon_Scanner, Rainbow_Cycle};
+enum effect {Fade_InOut, Cyclon_Scanner, Twinkle_, Sparkle_, Rainbow_Cycle};
 
 //Supported directions:
 enum  direction { FORWARD, REVERSE };
@@ -20,8 +20,12 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     void Update();
     void FadeInOut(uint32_t color1, uint8_t interval, direction dir = FORWARD);
     void FadeInOutUpdate();
-    void Cyclon(uint32_t color1, uint8_t EyeSize, int interval);
+    void Cyclon(uint32_t color1, uint8_t EyeSize, uint8_t interval);
     void CyclonUpdate();
+    void Twinkle(uint32_t color1, int count, uint8_t interval, bool randomColor);
+    void TwinkleUpdate();
+    void Sparkle(uint32_t color1, uint8_t interval, bool randomColor);
+    void SparkleUpdate();
     void rainbowCycle(uint8_t interval, direction dir = FORWARD);
     void rainbowCycleUpdate();
 
@@ -46,8 +50,10 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     uint32_t Color1, Color2;
     uint8_t r, g, b;
     uint8_t red, green, blue;
+    bool RandomColor;               //1, if random color selection is on
 
-    uint8_t SizeEffect;             //number of Pixel for the "Body" of the effect
+    uint8_t SizeEffect;             //number of Pixel for the effect
+    int Positions[];                //Array to store positions, length equals Effectsize
 
     //Definition of privat helper functions:
     void Increment();
