@@ -6,14 +6,15 @@ char* Messages[] = {"Welcome",
                     "Succesfully selected effect.",
                     "Input did not match any effect.",
                     "Do you wish to select color (y/n)?",
-                    "Selected default color.",
+                    "Selected random color: ",
                     "Please select color: ",
                     "Succesfully selected color.",
                     "Input did not match any color.",
                     "Effect is changed now.",
                     "Available effects:",
                     "Available colors:",
-                    "To list available colors, type 'help'"};
+                    "To list available colors, type 'help'",
+                    "Selected random effect: "};
 
 int clientStatus;
 int i;
@@ -64,21 +65,39 @@ bool ReadClient(bool EffectChange){
           for (int k=0;k<NumberEffects;k++){
             client.println(effectList[k]);
           }
+          client.println("random");
           clientStatus = 1;
         }
         //Input is something else, check list of effects for Match
         else{
           int Match = 0;
           for (int k=0;k<NumberEffects;k++){
-          //Input equals effect name: Change value of SelectedNew[0], sent Message 3&5, set clientStatus to 3
+          //Input equals effect name: Change value of SelectedNew[0]
             if (strcmp(incomingMessage,effectList[k]) == 0){
               SelectedNew[0] = k;
               Match = 1;
               client.println(Messages[3]);
-              client.print(Messages[5]);
-              clientStatus = 3;
             }
           }
+          //Same for random effect but sent Message 14
+          if (strcmp(incomingMessage, "random") == 0){
+            SelectedNew[0] = random(NumberEffects-1);
+            Match = 1;
+            client.print(Messages[14]);
+            client.println(effectList[SelectedNew[0]]);
+          }
+            //selected effect needs color selection: sent Message 5, set clientStatus to 3
+            if (ColorSelection[SelectedNew[0]] == 1 && Match == 1){
+               client.print(Messages[5]);
+              clientStatus = 3;
+            }
+            
+            //selected effect does not need color selection: sent Message 10, set clientStatus to 1
+            else if (ColorSelection[SelectedNew[0]] == 0 && Match == 1){
+              client.println(Messages[10]);
+              clientStatus = 1;
+            }
+
           //Input does not match any effect: sent Message 4&1, set clientSatus to 1
           if (Match == 0){
             client.println(Messages[4]);
@@ -91,10 +110,11 @@ bool ReadClient(bool EffectChange){
       //ClientStatus 3: evaluate input for color-selection (y/n)
       else if (clientStatus == 3){
         
-        //Input equals "n": Change value in SelectNew[1] to default color, sent Message 6&10, chnage EffectChange to 1, set clientStatus to 1
+        //Input equals "n": Change value in SelectNew[1] to radom color, sent Message 6&10, chnage EffectChange to 1, set clientStatus to 1
         if (strcmp(incomingMessage, "n") == 0){
-          SelectedNew[1] = colorDefault;
-          client.println(Messages[6]);
+          SelectedNew[1] = random(NumberColors-1);
+          client.print(Messages[6]);
+          client.println(colorList[SelectedNew[1]]);
           client.println(Messages[10]);
           EffectChange = 1;
           clientStatus = 1;
@@ -123,6 +143,7 @@ bool ReadClient(bool EffectChange){
           for (int k=0;k<NumberColors;k++){
             client.println(colorList[k]);
           }
+          client.println("random");
           client.print(Messages[7]);
         }
 
@@ -140,7 +161,16 @@ bool ReadClient(bool EffectChange){
               clientStatus = 1;
             }
           }
-          
+          //Same for random color but send Message 6&10
+          if (strcmp(incomingMessage, "random") == 0){
+            SelectedNew[1] = random(NumberColors-1);
+            Match = 1;
+            client.print(Messages[6]);
+            client.println(colorList[SelectedNew[1]]);
+            client.println(Messages[10]);
+            EffectChange = 1;
+            clientStatus = 1;
+          }
           //Input does not match any color: sent Message 9&13&7
           if (Match == 0){
             client.println(Messages[9]);

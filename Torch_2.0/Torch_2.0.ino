@@ -19,6 +19,7 @@ Effects strip = Effects(NumPixel, PixelPin, NEO_GRB + NEO_KHZ800);
 
 //Definition of possible effects and colors
 char* effectList[] = {"Fade","Cylon","Twinkle", "TwinkleRandom", "Sparkle", "SparkleRandom"};//,"ColorWipe","RainbowCycle","TheaterChase","TheaterChaseRainbow","Fire","MeteorRain","Rain","Plasma"};
+int ColorSelection[] = {1,1,1,0,1,0}; //1 if color selection for corresponding Effect possible
 int NumberEffects = 6; //13;
 char* colorList[] ={"red","green","blue"};
 int colorListRGB[3] = {strip.Color(255,0,0),
@@ -28,8 +29,8 @@ int NumberColors = 3;
 
 //Definition of various variables
 int colorDefault = 1;         //default color if nothing is selected by client
-int Selected[] = {1,0};    //initial definition of selected effect and color
-int SelectedNew[] = {1,0}; //initial definition of new selected effect and color   
+int Selected[] = {1,0};       //initial definition of selected effect and color
+int SelectedNew[] = {1,0};    //initial definition of new selected effect and color   
 bool EffectChange = 1;        //variable indication change in effect (0=no change, 1=change), initially one change necessary  
 int EffectLengthMax = 20;     //Length of longes effect-name in effectList
 
