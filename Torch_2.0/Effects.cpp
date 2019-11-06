@@ -20,6 +20,12 @@ void Effects::Update(){
       case Cyclon_Scanner:
         CyclonUpdate();
         break;
+      case Twinkle_:
+        TwinkleUpdate();
+        break;
+      case Sparkle_:
+        SparkleUpdate();
+        break;
       case Rainbow_Cycle:
         rainbowCycleUpdate();
         break;
@@ -90,7 +96,7 @@ void Effects::FadeInOutUpdate(){
   IncrementChangingDirections(); 
 }
 
-void Effects::Cyclon(uint32_t color1, uint8_t EyeSize, int interval){
+void Effects::Cyclon(uint32_t color1, uint8_t EyeSize, uint8_t interval){
   ActiveEffect = Cyclon_Scanner;
   Interval_Initial = interval;
   Direction = FORWARD;
@@ -113,6 +119,55 @@ void Effects::CyclonUpdate(){
       
     show();
     IncrementChangingDirections();
+}
+
+void Effects::Twinkle(uint32_t color1, int count, uint8_t interval, bool randomColor){
+  ActiveEffect = Twinkle_;
+  Interval = interval;
+  Index = 0;
+  Color1 = color1;
+  SizeEffect = count;
+  RandomColor = randomColor;
+  int Positions[SizeEffect]; //Array to store positions, length equals Effectsize
+}
+
+void Effects::TwinkleUpdate(){
+
+  //select random Pixel & store Position in Position-Array as first value
+  Positions[0] = random(numPixels());
+  
+  //Switch on selected pixel, Store position in Position-Array on first position
+  setPixelColor(Positions[0],Color1);
+    
+  //Switch off  pixel that has been on the longest (=last entry in Position-Array)
+  setPixelColor(Positions[SizeEffect-1],0,0,0);
+    
+  //Move all positions in Positionsarry one entry backwards, starting from last entry to avoid overwriting
+  for (int i = SizeEffect-1;i>0;i--){
+    if (RandomColor){
+      Color1 = Wheel(random(256));
+    }
+    setPixelColor(Positions[0],Color1);
+    Positions[i] = Positions[i-1];
+  }
+  show();
+}
+
+void Effects::Sparkle(uint32_t color1, uint8_t interval, bool randomColor){
+  ActiveEffect = Sparkle_;
+  Interval = interval;
+  Index = 0;
+  Color1 = color1;
+  RandomColor = randomColor;
+}
+
+void Effects::SparkleUpdate(){
+  clear(); 
+  if (RandomColor){
+    Color1 = Wheel(random(256));
+  }
+  setPixelColor(random(numPixels()),Color1);
+  show();
 }
 
 void Effects::rainbowCycle(uint8_t interval, direction dir){
