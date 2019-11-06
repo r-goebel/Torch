@@ -96,6 +96,7 @@ bool ReadClient(bool EffectChange){
             else if (ColorSelection[SelectedNew[0]] == 0 && Match == 1){
               client.println(Messages[10]);
               clientStatus = 1;
+              EffectChange = 1;
             }
 
           //Input does not match any effect: sent Message 4&1, set clientSatus to 1
