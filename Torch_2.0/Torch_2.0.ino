@@ -18,7 +18,7 @@ int NumCols = 16;
 Effects strip = Effects(NumPixel, PixelPin, NEO_GRB + NEO_KHZ800);
 
 //Definition of possible effects and colors
-char* effectList[] = {"Fade","Cylon","Twinkle", "TwinkleRandom", "Sparkle", "SparkleRandom"};//,"ColorWipe","RainbowCycle","TheaterChase","TheaterChaseRainbow","Fire","MeteorRain","Rain","Plasma"};
+char* effectList[] = {"fade","cylon","twinkle", "twinkle random", "sparkle", "sparkle random"};//,"ColorWipe","RainbowCycle","TheaterChase","TheaterChaseRainbow","Fire","MeteorRain","Rain","Plasma"};
 int ColorSelection[] = {1,1,1,0,1,0}; //1 if color selection for corresponding Effect possible
 int NumberEffects = 6; //13;
 char* colorList[] ={"red","green","blue"};
