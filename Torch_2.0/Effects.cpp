@@ -26,6 +26,9 @@ void Effects::Update(){
       case Sparkle_:
         SparkleUpdate();
         break;
+      case Color_Wipe:
+        colorWipeUpdate();
+        break;
       case Rainbow_Cycle:
         rainbowCycleUpdate();
         break;
@@ -70,6 +73,8 @@ void Effects::IncrementChangingDirections(){
 
 /******************  Effects  ******************/
 
+//******Fade
+
 void Effects::FadeInOut(uint32_t color1, uint8_t interval, direction dir){
   ActiveEffect = Fade_InOut;
   Interval_Initial = interval;
@@ -96,6 +101,8 @@ void Effects::FadeInOutUpdate(){
   IncrementChangingDirections(); 
 }
 
+//******Cylon
+
 void Effects::Cylon(uint32_t color1, uint8_t EyeSize, uint8_t interval){
   ActiveEffect = Cylon_Scanner;
   Interval_Initial = interval;
@@ -120,6 +127,8 @@ void Effects::CylonUpdate(){
     show();
     IncrementChangingDirections();
 }
+
+//******Twinkle
 
 void Effects::Twinkle(uint32_t color1, int count, uint8_t interval, bool randomColor){
   ActiveEffect = Twinkle_;
@@ -153,6 +162,8 @@ void Effects::TwinkleUpdate(){
   show();
 }
 
+//******Sparkle
+
 void Effects::Sparkle(uint32_t color1, uint8_t interval, bool randomColor){
   ActiveEffect = Sparkle_;
   Interval = interval;
@@ -169,6 +180,30 @@ void Effects::SparkleUpdate(){
   setPixelColor(random(numPixels()),Color1);
   show();
 }
+
+//******Color Wipe
+
+void Effects::colorWipe(uint32_t color1, uint8_t interval, direction dir){
+  ActiveEffect = Color_Wipe;
+  Interval = interval;
+  TotalSteps = numPixels()*2;
+  Color1 = color1;
+  Direction = dir;
+  Index = 0;
+}
+
+void Effects::colorWipeUpdate(){
+  //Erst alle an, dann alle aus
+  if (Index <numPixels()){ 
+    setPixelColor(Index, Color1);
+  }else {
+    setPixelColor(Index-numPixels(),0,0,0);
+  }
+  show();
+  Increment();
+}
+
+//******Rainbow Cycle
 
 void Effects::rainbowCycle(uint8_t interval, direction dir){
   ActiveEffect = Rainbow_Cycle;
