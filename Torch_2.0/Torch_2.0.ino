@@ -63,7 +63,7 @@ void loop() {
 
   //client selected new effect: replace effect and color in "Selected", initialize new effect if needed, reset "EffectChange"
   if (EffectChange == 1){
-    Serial.println("EffectChange notized");
+    Serial.println("EffectChange noticed");
     Selected[0] = SelectedNew[0];
     Selected[1] = SelectedNew[1];
     EffectChange = 0;
