@@ -6,10 +6,10 @@ void SelectEffect (){
     strip.Cylon(colorListRGB[Selected[1]], 4, 10);
     
   } else if (Selected[0] == 2){ //Twinkle
-    strip.Twinkle(colorListRGB[Selected[1]],10,250);
+    strip.Twinkle(colorListRGB[Selected[1]],20,250);
        
   }else if (Selected[0] == 3){ //TwinkleRandom
-    strip.Twinkle(colorListRGB[Selected[1]],10,250,1);
+    strip.Twinkle(colorListRGB[Selected[1]],20,250,1);
     
   }else if (Selected[0] == 4){ //Sparkle
     strip.Sparkle(colorListRGB[Selected[1]],0);
@@ -22,5 +22,8 @@ void SelectEffect (){
     
   } else if (Selected[0] == 7){ //RainbowCycle
     strip.rainbowCycle(10);
+    
+  } else if (Selected[0] == 8){ //Fire
+    strip.fire(NumCols);
   } 
 }
