@@ -18,14 +18,19 @@ int NumCols = 16;
 Effects strip = Effects(NumPixel, PixelPin, NEO_GRB + NEO_KHZ800);
 
 //Definition of possible effects and colors
-char* effectList[] = {"fade","cylon","twinkle", "twinkle random", "sparkle", "sparkle random"};//,"ColorWipe","RainbowCycle","TheaterChase","TheaterChaseRainbow","Fire","MeteorRain","Rain","Plasma"};
-int ColorSelection[] = {1,1,1,0,1,0}; //1 if color selection for corresponding Effect possible
-int NumberEffects = 6; //13;
-char* colorList[] ={"red","green","blue"};
-int colorListRGB[3] = {strip.Color(255,0,0),
-                       strip.Color(0,255,0),
-                       strip.Color(0,0,255)};
-int NumberColors = 3; 
+char* effectList[] = {"fade","cylon","twinkle", "twinkle random", "sparkle", "sparkle random", "color wipe", "rainbow cycle"};//"TheaterChase","TheaterChaseRainbow","Fire","MeteorRain","Rain","Plasma"};
+int ColorSelection[] = {1,1,1,0,1,0,1,0}; //1 if color selection for corresponding Effect possible
+int NumberEffects = 8; //13;
+char* colorList[] ={"red","yellow","green","cyan","blue","magenta","white"};
+int colorListRGB[7] = {strip.Color(255,0,0),  //red
+                       strip.Color(255,255,0),//yellow
+                       strip.Color(0,255,0),  //green
+                       strip.Color(0,255,255),//cyan
+                       strip.Color(0,0,255),  //blue
+                       strip.Color(255,0,255),//magenta
+                       strip.Color(255,255,255)};//white
+                       
+int NumberColors = 7; 
 
 //Definition of various variables
 int colorDefault = 1;         //default color if nothing is selected by client

@@ -16,5 +16,11 @@ void SelectEffect (){
     
   }else if (Selected[0] == 5){ //SparkleRandom
     strip.Sparkle(colorListRGB[Selected[1]],0,1);
-  }  
+    
+  }else if (Selected[0] == 6){ //ColorWipe
+    strip.colorWipe(colorListRGB[Selected[1]],50);
+    
+  } else if (Selected[0] == 7){ //RainbowCycle
+    strip.rainbowCycle(10);
+  } 
 }

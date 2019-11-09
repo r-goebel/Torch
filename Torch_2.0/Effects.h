@@ -6,7 +6,7 @@
 #include <Adafruit_NeoPixel.h>
 
 //Supported effects
-enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Rainbow_Cycle};
+enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle};
 
 //Supported directions:
 enum  direction { FORWARD, REVERSE };
@@ -26,6 +26,8 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     void TwinkleUpdate();
     void Sparkle(uint32_t color1, uint8_t interval, bool randomColor = 0);
     void SparkleUpdate();
+    void colorWipe(uint32_t color1, uint8_t interval, direction dir = FORWARD);
+    void colorWipeUpdate();
     void rainbowCycle(uint8_t interval, direction dir = FORWARD);
     void rainbowCycleUpdate();
 
