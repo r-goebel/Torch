@@ -133,34 +133,60 @@ void Effects::CylonUpdate(){
 void Effects::Twinkle(uint32_t color1, int count, uint8_t interval, bool randomColor){
   ActiveEffect = Twinkle_;
   Interval = interval;
-  Index = 0;
   Color1 = color1;
   SizeEffect = count;
+  Index = 0;
+  TotalSteps = SizeEffect;
   RandomColor = randomColor;
   int Positions[SizeEffect]; //Array to store positions, length equals Effectsize
 }
 
 void Effects::TwinkleUpdate(){
 
-  //select random Pixel & store Position in Position-Array as first value
-  Positions[0] = random(numPixels());
-  
-  //Switch on selected pixel, Store position in Position-Array on first position
-  setPixelColor(Positions[0],Color1);
-    
-  //Switch off  pixel that has been on the longest (=last entry in Position-Array)
-  setPixelColor(Positions[SizeEffect-1],0,0,0);
-    
-  //Move all positions in Positionsarry one entry backwards, starting from last entry to avoid overwriting
-  for (int i = SizeEffect-1;i>0;i--){
-    if (RandomColor){
-      Color1 = Wheel(random(256));
-    }
-    setPixelColor(Positions[0],Color1);
-    Positions[i] = Positions[i-1];
+  //select random Pixel & store Postition in Position-Array on the Position number "Index"
+  Positions[Index] = random(numPixels()); 
+
+  //switch on pixel according the Position stored in Position-Array on "Index"-Position
+  if (RandomColor){
+    Color1 = Wheel(random(256));
   }
+  setPixelColor(Positions[Index],Color1);
+
+  //switch off pixel according the Position stored in Position-Array on "Index+1"-Position
+  if (Index == SizeEffect){
+    setPixelColor(Positions[0],0,0,0);
+  } else {
+    setPixelColor(Positions[Index+1],0,0,0);
+  }
+
+  //Increase Index by one
+  Increment();
+
   show();
+  delay(9); //crashes with delay <= 8, if count = 10 and interval 250, do not know why
 }
+
+//void Effects::TwinkleUpdate(){
+//
+//  //select random Pixel & store Position in Position-Array as first value
+//  Positions[0] = random(numPixels());
+//  
+//  //Switch on selected pixel, Store position in Position-Array on first position
+//  if (RandomColor){
+//    Color1 = Wheel(random(256));
+//  }
+//  setPixelColor(Positions[0],Color1);
+//    
+//  //Switch off  pixel that has been on the longest (=last entry in Position-Array)
+//  setPixelColor(Positions[SizeEffect-1],0,0,0);
+//    
+//  //Move all positions in Positionsarry one entry backwards, starting from last entry to avoid overwriting
+//  for (int i = SizeEffect-1;i>0;i--){
+//    Positions[i] = Positions[i-1];
+//  }
+//  
+//  show();
+//}
 
 //******Sparkle
 

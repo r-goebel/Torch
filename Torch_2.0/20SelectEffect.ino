@@ -6,10 +6,10 @@ void SelectEffect (){
     strip.Cylon(colorListRGB[Selected[1]], 4, 10);
     
   } else if (Selected[0] == 2){ //Twinkle
-    strip.Twinkle(colorListRGB[Selected[1]],10,100);
+    strip.Twinkle(colorListRGB[Selected[1]],10,250);
        
   }else if (Selected[0] == 3){ //TwinkleRandom
-    strip.Twinkle(colorListRGB[Selected[1]],10,100,1);
+    strip.Twinkle(colorListRGB[Selected[1]],10,250,1);
     
   }else if (Selected[0] == 4){ //Sparkle
     strip.Sparkle(colorListRGB[Selected[1]],0);
