@@ -136,7 +136,7 @@ void Effects::Twinkle(uint32_t color1, int count, uint8_t interval, bool randomC
   Color1 = color1;
   SizeEffect = count;
   Index = 0;
-  TotalSteps = SizeEffect;
+  TotalSteps = SizeEffect+1;
   RandomColor = randomColor;
   int Positions[SizeEffect]; //Array to store positions, length equals Effectsize
 }
