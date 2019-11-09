@@ -6,6 +6,9 @@
 Effects::Effects(uint16_t pixels, uint8_t pin, uint8_t type) :
   Adafruit_NeoPixel(pixels, pin,type)
 {
+  //Allocate a zero initialized block of memory big enough to hold "pixels" uint8_t.
+  Positions = ( uint8_t* ) calloc( pixels, sizeof( uint8_t ) );
+  Heat = ( uint8_t* ) calloc( pixels, sizeof( uint8_t ) );
 }
 
 void Effects::Update(){
@@ -31,6 +34,9 @@ void Effects::Update(){
         break;
       case Rainbow_Cycle:
         rainbowCycleUpdate();
+        break;
+      case Fire_:
+        fireUpdate();
         break;
     }
   } else {
@@ -138,10 +144,13 @@ void Effects::Twinkle(uint32_t color1, int count, uint8_t interval, bool randomC
   Index = 0;
   TotalSteps = SizeEffect+1;
   RandomColor = randomColor;
-  int Positions[SizeEffect]; //Array to store positions, length equals Effectsize
+  // Clear buffer (from previous or different effects)
+  for (int i = 0; i < numPixels(); i++){
+    Positions[i] = 0;
+  }
 }
 
-void Effects::TwinkleUpdate(){
+void Effects::TwinkleUpdate(){ //crashes for count => 20 and interval < 250, do not know why
 
   //select random Pixel & store Postition in Position-Array on the Position number "Index"
   Positions[Index] = random(numPixels()); 
@@ -163,30 +172,8 @@ void Effects::TwinkleUpdate(){
   Increment();
 
   show();
-  delay(9); //crashes with delay <= 8, if count = 10 and interval 250, do not know why
+ 
 }
-
-//void Effects::TwinkleUpdate(){
-//
-//  //select random Pixel & store Position in Position-Array as first value
-//  Positions[0] = random(numPixels());
-//  
-//  //Switch on selected pixel, Store position in Position-Array on first position
-//  if (RandomColor){
-//    Color1 = Wheel(random(256));
-//  }
-//  setPixelColor(Positions[0],Color1);
-//    
-//  //Switch off  pixel that has been on the longest (=last entry in Position-Array)
-//  setPixelColor(Positions[SizeEffect-1],0,0,0);
-//    
-//  //Move all positions in Positionsarry one entry backwards, starting from last entry to avoid overwriting
-//  for (int i = SizeEffect-1;i>0;i--){
-//    Positions[i] = Positions[i-1];
-//  }
-//  
-//  show();
-//}
 
 //******Sparkle
 
@@ -247,6 +234,64 @@ void Effects::rainbowCycleUpdate(){
   Increment();
 }
 
+//******Fire
+//Based on https://github.com/FastLED/FastLED/blob/master/examples/Fire2012/Fire2012.ino
+// Recommended 30-100 frames per second, meaning an interframe delay of about 10-35 milliseconds.
+// COOLING: How much does the air cool as it rises?
+//          Less cooling = taller flames.  More cooling = shorter flames.
+//          Default 50, suggested range 20-100 
+// SPARKING: What chance (out of 255) is there that a new spark will be lit?
+//           Higher chance = more roaring fire.  Lower chance = more flickery fire.
+//           Default 120, suggested range 50-200.
+
+void Effects::fire(uint8_t numcols, uint8_t cooling, uint8_t sparking, uint8_t interval){
+  ActiveEffect = Fire_;
+  Interval = interval;
+  Cooling = cooling;
+  Sparking = sparking;
+  NumCols = numcols;
+}
+
+void Effects::fireUpdate(){
+ 
+  // Step 1.  Cool down every cell a little
+  for( int i = 0; i < numPixels(); i++) {
+    cooldown = random(0, ((Cooling * 10) / numPixels()) + 2);
+   
+    if(cooldown>Heat[i]) {
+      Heat[i]=0;
+    } else {
+      Heat[i]=Heat[i]-cooldown;
+    }
+  }
+ 
+  // Step 2.  Heat from each cell drifts 'up' and diffuses a little 
+  for( int i= 1; i <= numPixels()-NumCols+1; i++) {
+    if (Heat[i+NumCols] == 0){
+      Heat[i] = 0;
+    }
+    else{
+        Heat[i] = ((Heat[i + NumCols] + Heat[i + NumCols - 1] + Heat[i + NumCols + 1]) / 3)*0.95;
+    }
+  }
+   
+  // Step 3.  Randomly ignite new 'sparks' near the bottom (near bottom = first four rows)
+  if( random(255) < Sparking ) {
+    int y = random(252,300);
+    Heat[y] = random(160,255);
+  }
+
+  // Step 4.  Convert heat to LED colors
+  for( int i = 0; i <=numPixels(); i++) {
+    setPixelHeatColor(i, Heat[i] );
+  }
+
+  show();
+  
+}
+
+
+
 /******************  Helper functions  ******************/
 uint32_t Effects::Wheel(byte WheelPos){
   WheelPos = 255 - WheelPos;
@@ -277,4 +322,23 @@ uint8_t Effects::Green(uint32_t color)
 uint8_t Effects::Blue(uint32_t color)
 {
   return color & 255;
+}
+
+//Mapping heat to color
+void Effects::setPixelHeatColor (int Pixel, byte temperature) {
+  // Scale 'heat' down from 0-255 to 0-191
+  byte t192 = round((temperature/255.0)*191);
+ 
+  // calculate ramp up from
+  byte heatramp = t192 & 0x3F; // 0..63
+  heatramp <<= 2; // scale up to 0..252
+ 
+  // figure out which third of the spectrum we're in:
+  if( t192 > 0x80) {                     // hottest
+    setPixelColor(Pixel, 255, 255, heatramp);
+  } else if( t192 > 0x40 ) {             // middle
+    setPixelColor(Pixel, 255, heatramp, 0);
+  } else {                               // coolest
+    setPixelColor(Pixel, heatramp, 0, 0);
+  }
 }

@@ -6,7 +6,7 @@
 #include <Adafruit_NeoPixel.h>
 
 //Supported effects
-enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle};
+enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Fire_};
 
 //Supported directions:
 enum  direction { FORWARD, REVERSE };
@@ -30,12 +30,15 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     void colorWipeUpdate();
     void rainbowCycle(uint8_t interval, direction dir = FORWARD);
     void rainbowCycleUpdate();
+    void fire( uint8_t numcols, uint8_t cooling = 50, uint8_t sparking = 120, uint8_t interval = 15);
+    void fireUpdate();
 
     //helper functions
     uint8_t Red(uint32_t color);
     uint8_t Green(uint32_t color);
     uint8_t Blue(uint32_t color);
     uint32_t Wheel(byte WheelPos);
+    void setPixelHeatColor(int Pixel, byte temperature);
 
   private:
     effect ActiveEffect;       // which pattern is running
@@ -55,8 +58,16 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     bool RandomColor;               //1, if random color selection is on
 
     uint8_t SizeEffect;             //number of Pixel for the effect
-    int Positions[];                //Array to store positions, length equals Effectsize
+    uint8_t *Positions;              //Array to store positions, length equals Effectsize
     int Pixel;                      //Pixel to be changed
+
+    int Cooling;                    //How much does the air cool as it rises
+    int Sparking;                   //What chance (out of 255) is there that a new spark will be lit
+    uint8_t *Heat;                   // Heat of each pixel
+    int cooldown;                   //cooldown factor
+    byte temperature;               //temperature of a pixel
+
+    uint8_t NumCols;                //Number of columns in matrix
 
     //Definition of privat helper functions:
     void Increment();
