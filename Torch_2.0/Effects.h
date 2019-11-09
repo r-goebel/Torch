@@ -6,7 +6,7 @@
 #include <Adafruit_NeoPixel.h>
 
 //Supported effects
-enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Fire_};
+enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Theater_Chase, Fire_};
 
 //Supported directions:
 enum  direction { FORWARD, REVERSE };
@@ -30,6 +30,8 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     void colorWipeUpdate();
     void rainbowCycle(uint8_t interval, direction dir = FORWARD);
     void rainbowCycleUpdate();
+    void theaterChase(uint32_t color1, bool rainbow = 0, uint32_t color2=Color(0,0,0), uint8_t interval=50);
+    void theaterChaseUpdate();
     void fire( uint8_t numcols, uint8_t cooling = 50, uint8_t sparking = 120, uint8_t interval = 15); //Only possible on Neopixel strip wrapped around something
     void fireUpdate();
 
@@ -56,6 +58,7 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     uint8_t r, g, b;
     uint8_t red, green, blue;
     bool RandomColor;               //1, if random color selection is on
+    bool Rainbow;                   //1, if rainbow colors selection is on
 
     uint8_t SizeEffect;             //number of Pixel for the effect
     uint32_t *Positions;              //Array to store positions, length equals Effectsize
