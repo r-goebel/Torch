@@ -58,7 +58,7 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     bool RandomColor;               //1, if random color selection is on
 
     uint8_t SizeEffect;             //number of Pixel for the effect
-    uint8_t *Positions;              //Array to store positions, length equals Effectsize
+    uint32_t *Positions;              //Array to store positions, length equals Effectsize
     int Pixel;                      //Pixel to be changed
 
     int Cooling;                    //How much does the air cool as it rises

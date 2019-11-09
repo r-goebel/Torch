@@ -7,7 +7,7 @@ Effects::Effects(uint16_t pixels, uint8_t pin, uint8_t type) :
   Adafruit_NeoPixel(pixels, pin,type)
 {
   //Allocate a zero initialized block of memory big enough to hold "pixels" uint8_t.
-  Positions = ( uint8_t* ) calloc( pixels, sizeof( uint8_t ) );
+  Positions = ( uint32_t* ) calloc( pixels, sizeof( uint32_t ) );
   Heat = ( uint8_t* ) calloc( pixels, sizeof( uint8_t ) );
 }
 
@@ -150,7 +150,7 @@ void Effects::Twinkle(uint32_t color1, int count, uint8_t interval, bool randomC
   }
 }
 
-void Effects::TwinkleUpdate(){ //crashes for count => 20 and interval < 250, do not know why
+void Effects::TwinkleUpdate(){ //crashes for count => 10 and interval < 250, do not know why
 
   //select random Pixel & store Postition in Position-Array on the Position number "Index"
   Positions[Index] = random(numPixels()); 
