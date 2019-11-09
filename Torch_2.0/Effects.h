@@ -30,7 +30,7 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     void colorWipeUpdate();
     void rainbowCycle(uint8_t interval, direction dir = FORWARD);
     void rainbowCycleUpdate();
-    void fire( uint8_t numcols, uint8_t cooling = 50, uint8_t sparking = 120, uint8_t interval = 15);
+    void fire( uint8_t numcols, uint8_t cooling = 50, uint8_t sparking = 120, uint8_t interval = 15); //Only possible on Neopixel strip wrapped around something
     void fireUpdate();
 
     //helper functions
