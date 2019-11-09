@@ -56,6 +56,7 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
 
     uint8_t SizeEffect;             //number of Pixel for the effect
     int Positions[];                //Array to store positions, length equals Effectsize
+    int Pixel;                      //Pixel to be changed
 
     //Definition of privat helper functions:
     void Increment();
