@@ -23,7 +23,13 @@ void SelectEffect (){
   } else if (Selected[0] == 7){ //RainbowCycle
     strip.rainbowCycle(10);
     
-  } else if (Selected[0] == 8){ //Fire
+  } else if (Selected[0] == 8){ //TheaterChase
+    strip.theaterChase(colorListRGB[Selected[1]]);
+    
+  } else if (Selected[0] == 9){ //TheaterChaseRainbow
+    strip.theaterChase(colorListRGB[Selected[1]],1);
+    
+  } else if (Selected[0] == 10){ //Fire
     strip.fire(NumCols);
   } 
 }

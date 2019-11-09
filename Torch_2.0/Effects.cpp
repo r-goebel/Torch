@@ -35,6 +35,9 @@ void Effects::Update(){
       case Rainbow_Cycle:
         rainbowCycleUpdate();
         break;
+      case Theater_Chase:
+        theaterChaseUpdate();
+        break;
       case Fire_:
         fireUpdate();
         break;
@@ -150,7 +153,7 @@ void Effects::Twinkle(uint32_t color1, int count, uint8_t interval, bool randomC
   }
 }
 
-void Effects::TwinkleUpdate(){ //crashes for count => 10 and interval < 250, do not know why
+void Effects::TwinkleUpdate(){ //crashes for count > 10 and interval < 250, do not know why
 
   //select random Pixel & store Postition in Position-Array on the Position number "Index"
   Positions[Index] = random(numPixels()); 
@@ -234,7 +237,36 @@ void Effects::rainbowCycleUpdate(){
   Increment();
 }
 
+//******Theater Chase
+void Effects::theaterChase(uint32_t color1, bool rainbow, uint32_t color2, uint8_t interval){
+  ActiveEffect = Theater_Chase;
+  Color1 = color1;
+  Color2 = color2;
+  Interval = interval;
+  Index = 0;
+  TotalSteps = numPixels();
+  Rainbow = rainbow;
+}
+
+void Effects::theaterChaseUpdate(){
+  for (int i = 0; i < numPixels(); i++){
+    if ((i + Index) % 3 == 0){
+      if (Rainbow){
+        Color1 = Wheel(((i * 256 / numPixels()) + Index) & 255);
+      }
+      setPixelColor(i, Color1);
+    }
+    else
+    {
+      setPixelColor(i, Color2);
+    }
+  }
+  show();
+  Increment();
+}
+
 //******Fire
+
 //Based on https://github.com/FastLED/FastLED/blob/master/examples/Fire2012/Fire2012.ino
 // Recommended 30-100 frames per second, meaning an interframe delay of about 10-35 milliseconds.
 // COOLING: How much does the air cool as it rises?
