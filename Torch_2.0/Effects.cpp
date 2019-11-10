@@ -9,6 +9,7 @@ Effects::Effects(uint16_t pixels, uint8_t pin, uint8_t type) :
   //Allocate a zero initialized block of memory big enough to hold "pixels" uint8_t.
   Positions = ( uint32_t* ) calloc( pixels, sizeof( uint32_t ) );
   Heat = ( uint8_t* ) calloc( pixels, sizeof( uint8_t ) );
+  Rain = (bool* ) calloc ( pixels, sizeof( bool ) );
 }
 
 void Effects::Update(){
@@ -43,6 +44,9 @@ void Effects::Update(){
         break;
       case Meteor_Rain_Spiral:
         meteorRainSpiralUpdate();
+        break;
+      case Rain_Spiral:
+        RainSpiralUpdate();
         break;
     }
   } else {
@@ -367,6 +371,46 @@ void Effects::meteorRainSpiralUpdate() {
    
     show();
     Increment(16);
+}
+
+//******Rain (for strip wrapped around something)
+
+void Effects::RainSpiral(uint32_t color1, bool wind, uint8_t numcols, uint8_t interval, uint8_t chanceNew){
+  ActiveEffect = Rain_Spiral;
+  Direction = FORWARD;
+  Interval = interval;
+  Color1 = color1;
+  Wind = wind;
+  NumCols = numcols;
+  ChanceNew = chanceNew;
+}
+
+void Effects::RainSpiralUpdate(){
+  clear();
+  
+  //Copy each Pixel to next row
+  for(int i = numPixels()-1;i >= NumCols; i--){
+    Rain[i] = Rain[i-NumCols + Wind];
+  }
+
+  //delete first row
+  for (int i=0; i<=NumCols; i++){
+    Rain[i] = 0;
+  }
+
+  //seed some new drops in first row
+  if( random(10) < ChanceNew ) {
+    int i = random(0,15);
+    Rain[i] = 1;
+  }
+
+  //set pixel to desired color
+  for (int i = 0; i<numPixels(); i++){
+    if (Rain[i]){
+      setPixelColor(i, Color1);
+    }
+  }
+  show();
 }
 
 /******************  Helper functions  ******************/
