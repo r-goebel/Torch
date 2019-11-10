@@ -38,10 +38,8 @@ Die meisten Effekte habe ich [hier](https://www.tweaking4all.com/hardware/arduin
 * Plasma: [Neopixelplasma by John Ericksen](https://github.com/johncarl81/neopixelplasma) 
 
 Weitere Ideen:
-* SnowSparkle
-* RunningLights
 * Meteor Rain mit mehr als einem Meteor
-* AurBubbles
+* AirBubbles
 
 
 
