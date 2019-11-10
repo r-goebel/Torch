@@ -394,13 +394,13 @@ void Effects::RainSpiralUpdate(){
   }
 
   //delete first row
-  for (int i=0; i<=NumCols; i++){
+  for (int i=0; i<NumCols; i++){
     Rain[i] = 0;
   }
 
   //seed some new drops in first row
   if( random(10) < ChanceNew ) {
-    int i = random(0,15);
+    int i = random(0,NumCols);
     Rain[i] = 1;
   }
 
