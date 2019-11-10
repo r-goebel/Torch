@@ -35,5 +35,8 @@ void SelectEffect (){
   } else if (Selected[0] == 11){ //Meteor Rain
     strip.meteorRainSpiral(colorListRGB[Selected[1]],NumCols);
   
+  } else if (Selected[0] == 12){ //Rain without wind
+    strip.RainSpiral(colorListRGB[Selected[1]],0,NumCols);
+  
   }
 }

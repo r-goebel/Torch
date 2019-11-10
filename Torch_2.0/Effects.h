@@ -6,7 +6,7 @@
 #include <Adafruit_NeoPixel.h>
 
 //Supported effects
-enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Theater_Chase, Fire_Spiral, Meteor_Rain_Spiral};
+enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Theater_Chase, Fire_Spiral, Meteor_Rain_Spiral, Rain_Spiral};
 
 //Supported directions:
 enum  direction { FORWARD, REVERSE };
@@ -36,6 +36,8 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     void fireSpiralUpdate();
     void meteorRainSpiral(uint32_t color1, uint8_t numcols, uint8_t meteorSize = 4, uint8_t TrailDecay = 64, bool RandomDecay = 1, uint8_t interval = 30); //Only possible on Neopixel strip wrapped around something
     void meteorRainSpiralUpdate();
+    void RainSpiral(uint32_t color1, bool wind, uint8_t numcols, uint8_t interval = 50, uint8_t chanceNew = 5);
+    void RainSpiralUpdate();
 
     //helper functions
     uint8_t Red(uint32_t color);
@@ -76,6 +78,10 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     uint8_t TrailDecay;             //Fading value for Decay
     bool RandomDecay;               //1 if random Decay is selected
     uint8_t fadeValue;              //Variable for Fading value inside fade to black function
+
+    bool *Rain;                     //Array to store which pixel is switched on
+    uint8_t ChanceNew;              //Chance for new drop/pixel
+    bool Wind;                      //1 if wind is on
 
     uint8_t NumCols;                //Number of columns in matrix
     uint8_t IncrementValue;         //Incrementing value
