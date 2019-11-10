@@ -2,7 +2,6 @@
 //Uploadspeed:115200
 
 //Include necessary libraries
-#include <Adafruit_NeoPixel.h>
 #include <ESP8266WiFi.h>
 #include "Effects.h"
 
@@ -18,9 +17,9 @@ int NumCols = 16;
 Effects strip = Effects(NumPixel, PixelPin, NEO_GRB + NEO_KHZ800);
 
 //Definition of possible effects and colors
-char* effectList[] = {"fade","cylon","twinkle", "twinkle random", "sparkle", "sparkle random", "color wipe", "rainbow cycle", "theater", "theater rainbow", "fire", "meteor rain", "rain"};//"Rain","Plasma"};
-int ColorSelection[] = {1,1,1,0,1,0,1,0,1,0,0,1,1}; //1 if color selection for corresponding Effect possible
-int NumberEffects = 13; //13;
+char* effectList[] = {"fade","cylon","twinkle", "twinkle random", "sparkle", "sparkle random", "color wipe", "rainbow cycle", "theater", "theater rainbow", "fire", "meteor rain", "rain", "marble"};
+int ColorSelection[] = {1,1,1,0,1,0,1,0,1,0,0,1,1,1}; //1 if color selection for corresponding Effect possible
+int NumberEffects = 14; //13;
 char* colorList[] ={"red","yellow","green","cyan","blue","magenta","white"};
 int colorListRGB[7] = {strip.Color(255,0,0),  //red
                        strip.Color(255,255,0),//yellow

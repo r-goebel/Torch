@@ -36,7 +36,10 @@ void SelectEffect (){
     strip.meteorRainSpiral(colorListRGB[Selected[1]],NumCols);
   
   } else if (Selected[0] == 12){ //Rain without wind
-    strip.RainSpiral(colorListRGB[Selected[1]],0,NumCols);
+    strip.rainSpiral(colorListRGB[Selected[1]],0,NumCols);
+  
+  }else if (Selected[0] == 13){ //Marble
+    strip.rollingMarble(colorListRGB[Selected[1]],30);
   
   }
 }

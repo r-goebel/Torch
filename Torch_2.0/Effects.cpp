@@ -2,6 +2,7 @@
 //#include "Arduino.h"
 //#include <Adafruit_NeoPixel.h>
 #include "Effects.h"
+#include "Marble.h"
 
 Effects::Effects(uint16_t pixels, uint8_t pin, uint8_t type) :
   Adafruit_NeoPixel(pixels, pin,type)
@@ -46,7 +47,10 @@ void Effects::Update(){
         meteorRainSpiralUpdate();
         break;
       case Rain_Spiral:
-        RainSpiralUpdate();
+        rainSpiralUpdate();
+        break;
+      case  Rolling_Marble:
+        rollingMarbleUpdate();
         break;
     }
   } else {
@@ -375,7 +379,7 @@ void Effects::meteorRainSpiralUpdate() {
 
 //******Rain (for strip wrapped around something)
 
-void Effects::RainSpiral(uint32_t color1, bool wind, uint8_t numcols, uint8_t interval, uint8_t chanceNew){
+void Effects::rainSpiral(uint32_t color1, bool wind, uint8_t numcols, uint8_t interval, uint8_t chanceNew){
   ActiveEffect = Rain_Spiral;
   Direction = FORWARD;
   Interval = interval;
@@ -385,7 +389,7 @@ void Effects::RainSpiral(uint32_t color1, bool wind, uint8_t numcols, uint8_t in
   ChanceNew = chanceNew;
 }
 
-void Effects::RainSpiralUpdate(){
+void Effects::rainSpiralUpdate(){
   clear();
   
   //Copy each Pixel to next row
@@ -411,6 +415,32 @@ void Effects::RainSpiralUpdate(){
     }
   }
   show();
+}
+
+//******Rolling Marble
+
+void Effects::rollingMarble(uint32_t color1, uint8_t interval, direction dir) {
+  ActiveEffect = Rolling_Marble;
+  Index = 0;
+  Interval = interval;
+  Direction = dir;
+  Color1 = color1;
+  
+  marbleInitialize();
+}
+
+void Effects::rollingMarbleUpdate(){
+  //separate library due to lots of calculations
+  
+  clear();
+  
+  //set Marble pixel
+  setPixelColor(MarblePixel, Color1);
+
+  show();
+  
+  marbleUpdate();
+
 }
 
 /******************  Helper functions  ******************/
