@@ -38,8 +38,11 @@ void Effects::Update(){
       case Theater_Chase:
         theaterChaseUpdate();
         break;
-      case Fire_:
-        fireUpdate();
+      case Fire_Spiral:
+        fireSpiralUpdate();
+        break;
+      case Meteor_Rain_Spiral:
+        meteorRainSpiralUpdate();
         break;
     }
   } else {
@@ -47,15 +50,15 @@ void Effects::Update(){
   }
 }
 
-void Effects::Increment(){
+void Effects::Increment(uint8_t IncrementValue){
   if (Direction == FORWARD){
-    Index++;
+    Index = Index + IncrementValue;
     if (Index >= TotalSteps){
       Index = 0;
     }
   }
   else { // Direction == REVERSE
-    --Index;
+    Index = Index - IncrementValue;
     if (Index <= 0){
       Index = TotalSteps - 1;
     }
@@ -79,6 +82,7 @@ void Effects::IncrementChangingDirections(){
     }
   }
 }
+
 
 /******************  Effects  ******************/
 
@@ -172,7 +176,7 @@ void Effects::TwinkleUpdate(){ //crashes for count > 10 and interval < 250, do n
   }
 
   //Increase Index by one
-  Increment();
+  Increment(1);
 
   show();
  
@@ -216,7 +220,7 @@ void Effects::colorWipeUpdate(){
     setPixelColor(Index-numPixels(),0,0,0);
   }
   show();
-  Increment();
+  Increment(1);
 }
 
 //******Rainbow Cycle
@@ -234,7 +238,7 @@ void Effects::rainbowCycleUpdate(){
     setPixelColor(i, Wheel(((i * 256 / numPixels()) + Index) & 255));
   }
   show();
-  Increment();
+  Increment(1);
 }
 
 //******Theater Chase
@@ -262,10 +266,10 @@ void Effects::theaterChaseUpdate(){
     }
   }
   show();
-  Increment();
+  Increment(1);
 }
 
-//******Fire
+//******Fire Spiral (for strip wrapped around something)
 
 //Based on https://github.com/FastLED/FastLED/blob/master/examples/Fire2012/Fire2012.ino
 // Recommended 30-100 frames per second, meaning an interframe delay of about 10-35 milliseconds.
@@ -276,15 +280,15 @@ void Effects::theaterChaseUpdate(){
 //           Higher chance = more roaring fire.  Lower chance = more flickery fire.
 //           Default 120, suggested range 50-200.
 
-void Effects::fire(uint8_t numcols, uint8_t cooling, uint8_t sparking, uint8_t interval){
-  ActiveEffect = Fire_;
+void Effects::fireSpiral(uint8_t numcols, uint8_t cooling, uint8_t sparking, uint8_t interval){
+  ActiveEffect = Fire_Spiral;
   Interval = interval;
   Cooling = cooling;
   Sparking = sparking;
   NumCols = numcols;
 }
 
-void Effects::fireUpdate(){
+void Effects::fireSpiralUpdate(){
  
   // Step 1.  Cool down every cell a little
   for( int i = 0; i < numPixels(); i++) {
@@ -322,7 +326,47 @@ void Effects::fireUpdate(){
   
 }
 
+//******Meteor Rain (for strip wrapped around something)
 
+void Effects::meteorRainSpiral(uint32_t color1, uint8_t numcols, uint8_t meteorSize, uint8_t trailDecay, bool randomDecay, uint8_t interval){
+  ActiveEffect = Meteor_Rain_Spiral;
+  Interval = interval;
+  Color1 = color1;
+  Index = 0;
+  TotalSteps = numPixels()*3; //numPixels*3, to ensure enough time for fading to black of all pixels
+  Direction = FORWARD;
+  SizeEffect = meteorSize;
+  TrailDecay = trailDecay;
+  RandomDecay = randomDecay; 
+  NumCols = numcols;
+}
+
+void Effects::meteorRainSpiralUpdate() {  
+
+  //wähle zufälligen pixel in erster Reihe zum starten
+  if (Index == 0){
+    Pixel = random(15);
+  }
+   
+    // fade brightness all LEDs in selected row one step
+    for(int j=Pixel; j<numPixels(); j=j+16) {
+      if( (!RandomDecay) || (random(10)>5) ) { //RandomDecay is not selected or with 50% chance
+        Serial.print("Fading ");
+        Serial.print(j);
+        fadeToBlack(j, TrailDecay );        
+      }
+    }
+   
+    // draw meteor
+    for(int j = 0; j < SizeEffect; j++) {
+      if( ( (Pixel+Index) < numPixels()) && (((Pixel+Index)-j*NumCols)>=0) ) {
+        setPixelColor(((Pixel+Index)-j*NumCols), Color1);
+      }
+    }
+   
+    show();
+    Increment(16);
+}
 
 /******************  Helper functions  ******************/
 uint32_t Effects::Wheel(byte WheelPos){
@@ -373,4 +417,19 @@ void Effects::setPixelHeatColor (int Pixel, byte temperature) {
   } else {                               // coolest
     setPixelColor(Pixel, heatramp, 0, 0);
   }
+}
+
+
+void Effects::fadeToBlack(int Pixel, uint8_t fadeValue) {
+
+    ColorOld = getPixelColor(Pixel);
+    r = (ColorOld & 0x00ff0000UL) >> 16;
+    g = (ColorOld & 0x0000ff00UL) >> 8;
+    b = (ColorOld & 0x000000ffUL);
+
+    r=(r<=10)? 0 : (int) r-(r*fadeValue/256);
+    g=(g<=10)? 0 : (int) g-(g*fadeValue/256);
+    b=(b<=10)? 0 : (int) b-(b*fadeValue/256);
+   
+    setPixelColor(Pixel, r,g,b);
 }
