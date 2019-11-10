@@ -30,6 +30,10 @@ void SelectEffect (){
     strip.theaterChase(colorListRGB[Selected[1]],1);
     
   } else if (Selected[0] == 10){ //Fire
-    strip.fire(NumCols);
-  } 
+    strip.fireSpiral(NumCols);
+  
+  } else if (Selected[0] == 11){ //Meteor Rain
+    strip.meteorRainSpiral(colorListRGB[Selected[1]],NumCols);
+  
+  }
 }
