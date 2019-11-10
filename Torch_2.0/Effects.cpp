@@ -151,13 +151,14 @@ void Effects::Twinkle(uint32_t color1, int count, uint8_t interval, bool randomC
   Index = 0;
   TotalSteps = SizeEffect+1;
   RandomColor = randomColor;
+  Direction = FORWARD;
   // Clear buffer (from previous or different effects)
   for (int i = 0; i < numPixels(); i++){
     Positions[i] = 0;
   }
 }
 
-void Effects::TwinkleUpdate(){ //crashes for count > 10 and interval < 250, do not know why
+void Effects::TwinkleUpdate(){
 
   //select random Pixel & store Postition in Position-Array on the Position number "Index"
   Positions[Index] = random(numPixels()); 
