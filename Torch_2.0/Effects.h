@@ -4,14 +4,15 @@
 
 #include "Arduino.h"
 #include <Adafruit_NeoPixel.h>
+#include "Marble.h"
 
 //Supported effects
-enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Theater_Chase, Fire_Spiral, Meteor_Rain_Spiral, Rain_Spiral};
+enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Theater_Chase, Fire_Spiral, Meteor_Rain_Spiral, Rain_Spiral, Rolling_Marble};
 
 //Supported directions:
 enum  direction { FORWARD, REVERSE };
 
-class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit_Neopixel
+class Effects : public Adafruit_NeoPixel, Marble //Class Effects includes class Adafruit_Neopixel and Marble
 {
   public: 
     Effects(uint16_t pixels, uint8_t pin, uint8_t type);
@@ -36,8 +37,10 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     void fireSpiralUpdate();
     void meteorRainSpiral(uint32_t color1, uint8_t numcols, uint8_t meteorSize = 4, uint8_t TrailDecay = 64, bool RandomDecay = 1, uint8_t interval = 30); //Only possible on Neopixel strip wrapped around something
     void meteorRainSpiralUpdate();
-    void RainSpiral(uint32_t color1, bool wind, uint8_t numcols, uint8_t interval = 50, uint8_t chanceNew = 5);
-    void RainSpiralUpdate();
+    void rainSpiral(uint32_t color1, bool wind, uint8_t numcols, uint8_t interval = 50, uint8_t chanceNew = 5);
+    void rainSpiralUpdate();
+    void rollingMarble(uint32_t color1, uint8_t interval, direction dir = FORWARD);
+    void rollingMarbleUpdate();
 
     //helper functions
     uint8_t Red(uint32_t color);
