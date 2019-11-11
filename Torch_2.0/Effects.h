@@ -4,7 +4,6 @@
 
 #include "Arduino.h"
 #include <Adafruit_NeoPixel.h>
-#include "Marble.h"
 
 //Supported effects
 enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_Cycle, Theater_Chase, Fire_Spiral, Meteor_Rain_Spiral, Rain_Spiral, Rolling_Marble};
@@ -12,7 +11,7 @@ enum effect {Fade_InOut, Cylon_Scanner, Twinkle_, Sparkle_, Color_Wipe, Rainbow_
 //Supported directions:
 enum  direction { FORWARD, REVERSE };
 
-class Effects : public Adafruit_NeoPixel, Marble //Class Effects includes class Adafruit_Neopixel and Marble
+class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit_Neopixel
 {
   public: 
     Effects(uint16_t pixels, uint8_t pin, uint8_t type);
@@ -39,7 +38,7 @@ class Effects : public Adafruit_NeoPixel, Marble //Class Effects includes class 
     void meteorRainSpiralUpdate();
     void rainSpiral(uint32_t color1, bool wind, uint8_t numcols, uint8_t interval = 50, uint8_t chanceNew = 5);
     void rainSpiralUpdate();
-    void rollingMarble(uint32_t color1, uint8_t interval, direction dir = FORWARD);
+    void rollingMarble(uint8_t interval, direction dir = FORWARD);
     void rollingMarbleUpdate();
 
     //helper functions
@@ -89,9 +88,20 @@ class Effects : public Adafruit_NeoPixel, Marble //Class Effects includes class 
     uint8_t NumCols;                //Number of columns in matrix
     uint8_t IncrementValue;         //Incrementing value
 
+    float Mass;                     //Mass of marble
+    float Alpha;                    //angle of strip
+    float PixelDistance;            //distance between pixels
+    float v;                        // velocity of marble
+    float Pos;                      //Position of marble
+    float Delta_t, t_last;          //time variables
+    float F_G, F_F, F_Air;          //forces: gravity, friction, air resistance
+    float a;                        //acceleration
+
     //Definition of privat helper functions:
     void Increment(uint8_t IncrementValue);
     void IncrementChangingDirections();
+
+    void marblePhysicsUpdate();
 };
 
 

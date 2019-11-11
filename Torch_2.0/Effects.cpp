@@ -2,7 +2,6 @@
 //#include "Arduino.h"
 //#include <Adafruit_NeoPixel.h>
 #include "Effects.h"
-#include "Marble.h"
 
 Effects::Effects(uint16_t pixels, uint8_t pin, uint8_t type) :
   Adafruit_NeoPixel(pixels, pin,type)
@@ -419,28 +418,43 @@ void Effects::rainSpiralUpdate(){
 
 //******Rolling Marble
 
-void Effects::rollingMarble(uint32_t color1, uint8_t interval, direction dir) {
+void Effects::rollingMarble(uint8_t interval, direction dir) {
   ActiveEffect = Rolling_Marble;
   Index = 0;
   Interval = interval;
   Direction = dir;
-  Color1 = color1;
   
-  marbleInitialize();
+  Alpha = 0.04;            //valid for Torch
+  PixelDistance = 500/300; //300 pixel per 5m
+  t_last = millis();
+  Pos = 0;
+  Pixel = 0;
+
+  //Initialization of Marble
+  Mass = random(40,255);      //g (resonable limits: 4-25g)
+  v = 0;                   //(resonable limits 0-50)
+  Color1 = Wheel(Mass);  //massbased Color 
+
+  Mass *= 0.1;
+  
+  //set first Marble pixel
+  setPixelColor(Pixel, Color1);
 }
 
-void Effects::rollingMarbleUpdate(){
-  //separate library due to lots of calculations
-  
+void Effects::rollingMarbleUpdate(){  
   clear();
+
+  Delta_t = (millis() - t_last)/1000;
+  t_last = millis();
+      
+  //Determine the current Pixel for marble
+  marblePhysicsUpdate();
   
   //set Marble pixel
-  setPixelColor(MarblePixel, Color1);
+  setPixelColor(Pixel, Color1);
 
   show();
   
-  marbleUpdate();
-
 }
 
 /******************  Helper functions  ******************/
@@ -507,4 +521,57 @@ void Effects::fadeToBlack(int Pixel, uint8_t fadeValue) {
     b=(b<=10)? 0 : (int) b-(b*fadeValue/256);
    
     setPixelColor(Pixel, r,g,b);
+}
+
+
+
+//*****Functions for Marble
+
+void Effects::marblePhysicsUpdate(){ 
+  
+  float Gravity = 9.81;   //m/s²
+  float Mu = 0.001;        //
+  float Cw = 0.45;        //sphere (Reference "Das große Tafelwerk")
+  int Rho = 1290;       //g/m³ for air (Reference "Das große Tafelwerk")
+  float A = 0.8;          //cm² (shadow surface of sphere with diameter 0.5cm)
+
+  //Calculate weight force
+  F_G = Mass * Gravity * sin(Alpha); //0.196 g*m/s²
+
+  //Caclulate friction force
+  F_F = Mu * Mass * Gravity * cos(Alpha); //0.123 g*m/s²
+
+  //Calculate air resistance
+  F_Air = Cw * A / 10000 * 0.5 * Rho * pow(v,2); //0
+
+  //Calculate current acceleration
+  if (v < 0 ) {
+    F_F *= -1;
+    F_Air *= -1;
+  }
+  a = 1/Mass * (F_G-F_F-F_Air); //0.146 m/s²
+
+  //Calculate current velocity
+  v = a * Delta_t + v;        //0.00439m/s
+
+  //Calculate current position
+  Pos = v * Delta_t + Pos;
+
+  //Translate current Position in Pixel:
+  Pixel = (Pos / PixelDistance) + 0.5; //plus +0.5 necessary for rounding of the number to a discrete pixel
+ 
+  //MarblePixel is greater than pixel number --> reached lower end of strip (current direction: down, current velocity > 0)
+  if (Pixel >= numPixels() && v > 0) {
+
+    //bounce
+    v *= -1;  
+  }
+  
+  //MarblePixel is lower than 0 --> reached uppper end of strip (current direction: up, current velocity < 0)
+  else if (Pixel <= 0 && v < 0){
+    
+    //bounce
+    v *= -1; 
+  }
+  
 }

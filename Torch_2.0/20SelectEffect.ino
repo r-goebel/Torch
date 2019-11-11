@@ -39,7 +39,7 @@ void SelectEffect (){
     strip.rainSpiral(colorListRGB[Selected[1]],0,NumCols);
   
   }else if (Selected[0] == 13){ //Marble
-    strip.rollingMarble(colorListRGB[Selected[1]],30);
+    strip.rollingMarble(10);
   
   }
 }
