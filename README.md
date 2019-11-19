@@ -1,44 +1,31 @@
-# LED-Fackel
-Ich bin auf dem EH18 auf die Idee gestoßen worden, eine LED-Streifen auf ein Papprohr aufzubringen, um so die vollen 5m bespielen zu können ohne ständig ab- und aufwickeln zu müssen. Die Anschlüsse für 5V werden fest verbaut und später mittels Stecker einfach an Strom anzuschließen sein. Für die "Leuchtprogramme" wird ein ESP verbaut, der ebenfalls über den 5V Anschluss bestromt wird. 
+# LED torch
+On the EH18 I got the idea to put an LED strip on a cardboard tube to use the full 5m without having to unwind and wind it all the time. The connections for 5V will be installed permanently and can easily be plugged in later. For the effects an ESP is installed, which is also powered via the 5V connection. 
 
 ## Material
-  * Versandrolle aus Pappe (D=80mm; L=600mm(?); von Staples)
-  * 5m LED-Strip (WS2812b; Amazon)
+  * cardboard shipping roll (D=80mm; L=600mm(?))
+  * 5m LED Strip (WS2812b; Amazon)
   * Wemos D1 mini (ESP8266)
-  * Kondensator (1000 µF)
-  * Widerstand (470 Ohm)
-  * Kabel (Für Strom und Daten)
-  * Netzteil 5V (bisher max. 2A --> Maximale Hellifkeit nicht höher als 10)
-  * XT30 für Verbindung Netzteil-Fackel
+  * Capacitor (1000 µF)
+  * Resistance (470 Ohm)
+  * Cable (For power and data)
+  * Power supply 5V (up to now max. 2A --> Maximum brightness not higher than 10)
+  * XT30 for connection between power supply and torch
 
-## Aufbau
-folgt
+## Effects
+I found most of the ideas for effects [here](https://www.tweaking4all.com/hardware/arduino/adruino-led-strip-effects/#LEDStripEffectBlinkingHalloweenEyes) and [here](https://repos.ctdo.de/starcalc/ESP8266-RGB5m). The remaining effects have a corresponding note for the reference.
 
-## Code
-* "Fakel_old" enthält Skript mit diversen Effekten, die nicht alle laufen. Anschließend wurde alles noch einmal neu überarbeitet. Daher ist dieses Skript nicht aktuell, soll nur als "Effekt-Archiv" dienen
-* Aktuelle, lauffähige Version liegt in "Torch" auf Branch master
+* FadeInOut: Show and hide all pixels in default color
+* Cylon: An "eye" in a given color moving along the strip and back
+* Twinkle: Twinkle a given number of pixels in a given or random color
+* Sparkle: sparkle in given or random color
+* ColorWipe: Pixels are switched on one after the other in the specified color.
+* RainbowCycle: Rainbow moving along the strips
+* TheaterChase: including Rainbow option
+* Fire: based on [Fire2012 by Mark Kriegsman](https://github.com/FastLED/FastLED/blob/master/examples/Fire2012/Fire2012.ino)
+* MeteorRain
+* Rain
 
-Noch nicht eingebaut: Sinnvolle Programmwahl über Taster oder anders Interface
-
-## Effekte
-Die meisten Effekte habe ich [hier](https://www.tweaking4all.com/hardware/arduino/adruino-led-strip-effects/#LEDStripEffectBlinkingHalloweenEyes) gefunden. Die übrigen Effekte haben einen entsprechenden Vermerk für die Quelle oder sind selbst entwickelt.
-
-* FadeInOut: Ein- und Ausblenden aller Pixel in vorgegebener Farbe
-* CyclonBounce: Ein "Auge" in vorgegebener Farbe wanderd entlang des Strips und zurück
-* Twinkle: Zwinkern vorgegebener Pixelanzahl in vorgegebener Farbe
-* TwinkleRandom: Zwinkern vorgegebener Pixelanzahl in beliebiger Farbe
-* Sparkle: Funkeln vorgegebener zufälliger Pixelanzahl in vorgegebener Farbe
-* ColorWipe: Pixel werden der Reihen nach in vorgegebener Farbe eingeschaltet
-* RainbowCycle: Regenbogen wanderd entlang des strips
-* TheaterChase
-* TheaterChaseRainbow
-* Fire: Entspricht dem eigentlichen Fackel-Vorhaben und basiert auf [Fire2012 by Mark Kriegsman](https://github.com/FastLED/FastLED/blob/master/examples/Fire2012/Fire2012.ino)
-* MeteorRain: umgeschrieben entsprechend der LED- Anordnung
-* Rain: Regentropfen
-* Plasma: [Neopixelplasma by John Ericksen](https://github.com/johncarl81/neopixelplasma) 
-
-Weitere Ideen:
-* Meteor Rain mit mehr als einem Meteor
+New Ideas:
 * AirBubbles
 
 
