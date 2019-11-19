@@ -1,6 +1,9 @@
+//*****************Effects for NeoMatrix-Strip*****************
+//Ideas based on: 
+// - https://repos.ctdo.de/starcalc/ESP8266-RGB5m
+// - https://github.com/FastLED/FastLED/blob/master/examples/Fire2012/Fire2012.ino
+// - https://www.tweaking4all.com/hardware/arduino/adruino-led-strip-effects
 
-//#include "Arduino.h"
-//#include <Adafruit_NeoPixel.h>
 #include "Effects.h"
 
 Effects::Effects(uint16_t pixels, uint8_t pin, uint8_t type) :
@@ -10,6 +13,7 @@ Effects::Effects(uint16_t pixels, uint8_t pin, uint8_t type) :
   Positions = ( uint32_t* ) calloc( pixels, sizeof( uint32_t ) );
   Heat = ( uint8_t* ) calloc( pixels, sizeof( uint8_t ) );
   Rain = (bool* ) calloc ( pixels, sizeof( bool ) );
+  MeteorPos = (bool* ) calloc ( pixels, sizeof( bool ) );
 }
 
 void Effects::Update(){
@@ -351,29 +355,33 @@ void Effects::meteorRainSpiral(uint32_t color1, uint8_t numcols, uint8_t meteorS
 
 void Effects::meteorRainSpiralUpdate() {  
 
-  //wähle zufälligen pixel in erster Reihe zum starten
-  if (Index == 0){
-    Pixel = random(15);
+  //select random pixel in first row with a chance of 50%, save pixel in position array
+  if (random(10) > 5){
+    Pixel = random(0,(NumCols-1));
+    MeteorPos[Pixel] = 1;
   }
    
-    // fade brightness all LEDs in selected row one step
-    for(int j=Pixel; j<numPixels(); j=j+16) {
-      if( (!RandomDecay) || (random(10)>5) ) { //RandomDecay is not selected or with 50% chance
-        Serial.print("Fading ");
-        Serial.print(j);
-        fadeToBlack(j, TrailDecay );        
-      }
+  // fade brightness all LEDs in selected row one step
+  for(int j=0; j<numPixels(); j++) {
+    if( (!RandomDecay) || (random(10)>5) ) { //RandomDecay is not selected or with 50% chance
+      fadeToBlack(j, TrailDecay );    
     }
+  }
    
-    // draw meteor
-    for(int j = 0; j < SizeEffect; j++) {
-      if( ( (Pixel+Index) < numPixels()) && (((Pixel+Index)-j*NumCols)>=0) ) {
-        setPixelColor(((Pixel+Index)-j*NumCols), Color1);
+  // draw meteor
+  for (int i = numPixels()-1; i>=0; i--){ 
+    if (MeteorPos[i] == 1){
+      for(int j = 0; j < SizeEffect; j++) {
+        Serial.println((i-j*NumCols));
+        setPixelColor((i-j*NumCols), Color1);
       }
+      MeteorPos[i] = 0;
+      MeteorPos[i+NumCols] = 1;
     }
-   
-    show();
-    Increment(16);
+  }
+  
+  show();
+  //Increment(16);
 }
 
 //******Rain (for strip wrapped around something)

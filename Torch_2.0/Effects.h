@@ -81,6 +81,8 @@ class Effects : public Adafruit_NeoPixel //Class Effects includes class Adafruit
     bool RandomDecay;               //1 if random Decay is selected
     uint8_t fadeValue;              //Variable for Fading value inside fade to black function
 
+    bool *MeteorPos;
+
     bool *Rain;                     //Array to store which pixel is switched on
     uint8_t ChanceNew;              //Chance for new drop/pixel
     bool Wind;                      //1 if wind is on
