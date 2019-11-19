@@ -24,10 +24,11 @@ I found most of the ideas for effects [here](https://www.tweaking4all.com/hardwa
 * Fire: based on [Fire2012 by Mark Kriegsman](https://github.com/FastLED/FastLED/blob/master/examples/Fire2012/Fire2012.ino)
 * MeteorRain
 * Rain
+* Rolling Marble: Marble that rolls down following the course of the strip
 
 New Ideas:
 * AirBubbles
-
+* Bouncing Balls
 
 
 
