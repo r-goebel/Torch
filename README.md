@@ -5,11 +5,19 @@ On the EH18 I got the idea to put an LED strip on a cardboard tube to use the fu
   * cardboard shipping roll (D=80mm; L=600mm(?))
   * 5m LED Strip (WS2812b; Amazon)
   * Wemos D1 mini (ESP8266)
-  * Capacitor (1000 µF)
-  * Resistance (470 Ohm)
+  * 3 Capacitor (1000 µF)
+  * Resistor 470 Ohm
+  * Resistor 470k Ohm
+  * Resistor 10k Ohm 
+  * Diode
   * Cable (For power and data)
   * Power supply 5V (up to now max. 2A --> Maximum brightness not higher than 10)
   * XT30 for connection between power supply and torch
+  * MR30 for connection between Power suppli/PCB and the LEDstrip
+  
+  For an advanced look:
+  * Laser-cutted wood box (housing for PCB and Torch-Mount)
+  * Lamp Foil and Sandwich paper for light scattering
 
 ## Effects
 I found most of the ideas for effects [here](https://www.tweaking4all.com/hardware/arduino/adruino-led-strip-effects/#LEDStripEffectBlinkingHalloweenEyes) and [here](https://repos.ctdo.de/starcalc/ESP8266-RGB5m). The remaining effects have a corresponding note for the reference.
