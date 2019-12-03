@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:Torch_PCB-cache
 EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
@@ -160,4 +161,43 @@ Wire Wire Line
 Connection ~ 1900 1900
 Wire Wire Line
 	1900 1900 1900 2100
+$Comp
+L Device:R R3
+U 1 1 5DE6CD7B
+P 3550 1200
+F 0 "R3" V 3343 1200 50  0000 C CNN
+F 1 "R" V 3434 1200 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 3480 1200 50  0001 C CNN
+F 3 "~" H 3550 1200 50  0001 C CNN
+	1    3550 1200
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3150 1200 3400 1200
+Wire Wire Line
+	3700 1200 3800 1200
+Wire Wire Line
+	3800 1200 3800 900 
+Wire Wire Line
+	3800 750  1900 750 
+Wire Wire Line
+	1900 750  1900 1300
+Wire Wire Line
+	1900 1300 2050 1300
+Connection ~ 3800 900 
+Wire Wire Line
+	3800 900  3800 750 
+$Comp
+L Connector:Conn_01x01_Female J8
+U 1 1 5DE6D5BD
+P 4750 900
+F 0 "J8" H 4778 926 50  0000 L CNN
+F 1 "ToTouchSurface" H 4778 835 50  0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x01_P2.54mm_Vertical" H 4750 900 50  0001 C CNN
+F 3 "~" H 4750 900 50  0001 C CNN
+	1    4750 900 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4550 900  3800 900 
 $EndSCHEMATC

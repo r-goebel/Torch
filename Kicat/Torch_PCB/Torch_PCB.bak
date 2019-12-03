@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:Torch_PCB-cache
 EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
@@ -16,12 +17,12 @@ $EndDescr
 $Comp
 L Device:R R1
 U 1 1 5DD815E3
-P 1750 1400
-F 0 "R1" V 1543 1400 50  0000 C CNN
-F 1 "R" V 1634 1400 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1680 1400 50  0001 C CNN
-F 3 "~" H 1750 1400 50  0001 C CNN
-	1    1750 1400
+P 2900 1900
+F 0 "R1" V 2693 1900 50  0000 C CNN
+F 1 "R" V 2784 1900 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 2830 1900 50  0001 C CNN
+F 3 "~" H 2900 1900 50  0001 C CNN
+	1    2900 1900
 	0    1    1    0   
 $EndComp
 $Comp
@@ -147,15 +148,56 @@ Wire Wire Line
 Wire Wire Line
 	2050 1400 1900 1400
 Wire Wire Line
-	1600 1400 1500 1400
+	1900 1400 1900 1900
 Wire Wire Line
-	1500 1400 1500 2100
+	1900 2100 4550 2100
 Wire Wire Line
-	1500 2100 3650 2100
+	3050 1900 3650 1900
 Wire Wire Line
-	3650 1600 3650 2100
+	3650 1900 3650 1600
 Connection ~ 3650 1600
-Connection ~ 3650 2100
 Wire Wire Line
-	3650 2100 4550 2100
+	1900 1900 2750 1900
+Connection ~ 1900 1900
+Wire Wire Line
+	1900 1900 1900 2100
+$Comp
+L Device:R R?
+U 1 1 5DE6CD7B
+P 3550 1200
+F 0 "R?" V 3343 1200 50  0000 C CNN
+F 1 "R" V 3434 1200 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 3480 1200 50  0001 C CNN
+F 3 "~" H 3550 1200 50  0001 C CNN
+	1    3550 1200
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3150 1200 3400 1200
+Wire Wire Line
+	3700 1200 3800 1200
+Wire Wire Line
+	3800 1200 3800 900 
+Wire Wire Line
+	3800 750  1900 750 
+Wire Wire Line
+	1900 750  1900 1300
+Wire Wire Line
+	1900 1300 2050 1300
+Connection ~ 3800 900 
+Wire Wire Line
+	3800 900  3800 750 
+$Comp
+L Connector:Conn_01x01_Female J?
+U 1 1 5DE6D5BD
+P 4750 900
+F 0 "J?" H 4778 926 50  0000 L CNN
+F 1 "ToTouchSurface" H 4778 835 50  0000 L CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x01_P2.54mm_Vertical" H 4750 900 50  0001 C CNN
+F 3 "~" H 4750 900 50  0001 C CNN
+	1    4750 900 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4550 900  3800 900 
 $EndSCHEMATC
