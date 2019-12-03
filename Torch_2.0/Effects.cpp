@@ -372,7 +372,6 @@ void Effects::meteorRainSpiralUpdate() {
   for (int i = numPixels()-1; i>=0; i--){ 
     if (MeteorPos[i] == 1){
       for(int j = 0; j < SizeEffect; j++) {
-        Serial.println((i-j*NumCols));
         setPixelColor((i-j*NumCols), Color1);
       }
       MeteorPos[i] = 0;
