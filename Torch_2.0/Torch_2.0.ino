@@ -3,8 +3,7 @@
 
 //Include necessary libraries
 #include <ESP8266WiFi.h>
-#include <CapacitiveSensor.h>
-#include "Effects.h"
+#include <Effects.h>
 
 #ifdef __AVR__
 #include <avr/power.h>
