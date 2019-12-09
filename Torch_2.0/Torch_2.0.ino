@@ -47,7 +47,7 @@ WiFiServer server(port);
 #define PinIn D1
 #define PinOut D5
 CapacitiveSensor sensor = CapacitiveSensor(PinIn,PinOut);
-int intervalTouch = 2500; //interval in which no new Touch is allowed
+int intervalTouch = 500; //interval in which no new Touch is allowed
 int lastTouch;
 
 void setup() {
@@ -60,7 +60,7 @@ void setup() {
   
   //initialization of strip
   strip.begin();
-  strip.setBrightness(10);
+  strip.setBrightness(20); //maximum 20 is possible, 25 should work as well, not sure
   strip.show();
 }
 
