@@ -35,7 +35,7 @@ int NumberColors = 7;
 //Definition of various variables
 int colorDefault = 1;         //default color if nothing is selected by client
 int Selected[] = {1,0};       //initial definition of selected effect and color
-int SelectedNew[] = {1,0};    //initial definition of new selected effect and color   
+int SelectedNew[] = {random(0,NumberEffects),random(0,NumberColors)};    //initial definition of new selected effect and color   
 bool EffectChange = 1;        //variable indication change in effect (0=no change, 1=change), initially one change necessary  
 int EffectLengthMax = 20;     //Length of longes effect-name in effectList
 
