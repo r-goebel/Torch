@@ -294,32 +294,4 @@ Wire Notes Line
 	7000 2100 7000 5000
 Text Notes 3300 4900 0    50   ~ 0
 installed in lower box
-$Comp
-L Device:R R?
-U 1 1 5DE6D4D5
-P 4550 2000
-F 0 "R?" V 4343 2000 50  0000 C CNN
-F 1 "470kOhm" V 4434 2000 50  0000 C CNN
-F 2 "" V 4480 2000 50  0001 C CNN
-F 3 "~" H 4550 2000 50  0001 C CNN
-	1    4550 2000
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	3050 1700 4850 1700
-Wire Wire Line
-	4850 1700 4850 2000
-Wire Wire Line
-	3050 2000 3550 2000
-Wire Wire Line
-	4700 2000 4850 2000
-Text GLabel 1350 2800 0    50   Input ~ 0
-TouchSurface
-Wire Wire Line
-	1350 2800 3550 2800
-Wire Wire Line
-	3550 2800 3550 2000
-Connection ~ 3550 2000
-Wire Wire Line
-	3550 2000 4400 2000
 $EndSCHEMATC
