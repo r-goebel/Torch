@@ -43,17 +43,14 @@ int EffectLengthMax = 20;     //Length of longes effect-name in effectList
 int port = 5333;
 WiFiServer server(port);
 
-//Definition of Capacitivesensor
-#define PinIn D1
-#define PinOut D5
-CapacitiveSensor sensor = CapacitiveSensor(PinIn,PinOut);
-int intervalTouch = 500; //interval in which no new Touch is allowed
-int lastTouch;
+//Definition of Switch
+#define PinSwitch D6
+int intervalSwitch = 500; //interval in which no new Switch is allowed
+int lastSwitch;
 
 void setup() {
   Serial.begin(115200);
 
-  sensor.set_CS_AutocaL_Millis(0xFFFFFFFF);
   delay(1000);
 
   WifiSetup();
@@ -71,15 +68,13 @@ void loop() {
   EffectChange = ReadClient(EffectChange);
 
 
-  //if no input was recived from client, check touch
-  if (EffectChange == 0 && millis()-lastTouch > intervalTouch){
-    EffectChange = CheckTouch();
-    
-    //save current Time if Effect was Changed
-    if (EffectChange ==1){
-        lastTouch = millis();  
-    }
-    
+  //if no input was recived from client, check switch
+  if (EffectChange == 0 && millis()-lastSwitch > intervalSwitch){
+    EffectChange = CheckSwitch();
+
+       if (EffectChange == 1){
+        lastSwitch = millis();
+       }
   }
 
   //client selected new effect: replace effect and color in "Selected", initialize new effect if needed, reset "EffectChange"

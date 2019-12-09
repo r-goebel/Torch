@@ -1,14 +1,13 @@
 
  
-long SensorValue;
+bool SwitchState;
 
-bool CheckTouch(){
-  //Check sensor value
-    SensorValue = sensor.capacitiveSensor(5);
-    Serial.println(SensorValue);
-
+bool CheckSwitch(){
+  //Check switch state
+    SwitchState = digitalRead(PinSwitch);
+    
   //if Sensor value exceeds limit
-  if(SensorValue >= 1000){
+  if(SwitchState == HIGH){
     //Change Effect randonly
     SelectedNew[0] = random(NumberEffects-1);
     SelectedNew[1] = random(NumberColors-1);
