@@ -7,11 +7,10 @@ On the EH18 I got the idea to put an LED strip on a cardboard tube to use the fu
   * Wemos D1 mini (ESP8266)
   * 3 Capacitor (1000 µF)
   * Resistor 470 Ohm
-  * Resistor 470k Ohm
   * Resistor 10k Ohm 
   * Diode
   * Cable (For power and data)
-  * Power supply 5V (up to now max. 2A --> Maximum brightness not higher than 10)
+  * Power supply 5V (up to now max. 2A --> Maximum brightness not higher than 20)
   * XT30 for connection between power supply and torch
   * MR30 for connection between Power suppli/PCB and the LEDstrip
   
