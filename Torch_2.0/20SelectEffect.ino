@@ -31,14 +31,17 @@ void SelectEffect (){
     
   } else if (Selected[0] == 10){ //Fire
     strip.fireSpiral(NumCols);
-  
-  } else if (Selected[0] == 11){ //Meteor Rain
+    
+  } else if (Selected[0] == 11){ //Ice Fire
+    strip.fireSpiral(NumCols,1,100,175);
+      
+  } else if (Selected[0] == 12){ //Meteor Rain
     strip.meteorRainSpiral(colorListRGB[Selected[1]],NumCols);
   
-  } else if (Selected[0] == 12){ //Rain without wind
+  } else if (Selected[0] == 13){ //Rain without wind
     strip.rainSpiral(colorListRGB[Selected[1]],0,NumCols);
   
-  }else if (Selected[0] == 13){ //Marble
+  }else if (Selected[0] == 14){ //Marble
     strip.rollingMarble(10);
   
   }
