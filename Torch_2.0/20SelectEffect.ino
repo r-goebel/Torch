@@ -44,5 +44,8 @@ void SelectEffect (){
   }else if (Selected[0] == 14){ //Marble
     strip.rollingMarble(10);
   
+  }else if (Selected[0] == 15){ //Heart Beat
+    strip.heartBeat(colorListRGB[Selected[1]]);
+  
   }
 }

@@ -17,9 +17,9 @@ int NumCols = 16;
 Effects strip = Effects(NumPixel, PixelPin, NEO_GRB + NEO_KHZ800);
 
 //Definition of possible effects and colors
-char* effectList[] = {"fade","cylon","twinkle", "twinkle random", "sparkle", "sparkle random", "color wipe", "rainbow cycle", "theater", "theater rainbow", "fire", "ice fire", "meteor rain", "rain", "marble"};
-int ColorSelection[] = {1,1,1,0,1,0,1,0,1,0,0,0,1,1,0}; //1 if color selection for corresponding Effect possible
-int NumberEffects = 15;
+char* effectList[] = {"fade","cylon","twinkle", "twinkle random", "sparkle", "sparkle random", "color wipe", "rainbow cycle", "theater", "theater rainbow", "fire", "ice fire", "meteor rain", "rain", "marble", "heart beat"};
+int ColorSelection[] = {1,1,1,0,1,0,1,0,1,0,0,0,1,1,0,1}; //1 if color selection for corresponding Effect possible
+int NumberEffects = 16;
 char* colorList[] ={"red","yellow","green","cyan","blue","magenta","white"};
 int colorListRGB[7] = {strip.Color(255,0,0),  //red
                        strip.Color(255,255,0),//yellow
