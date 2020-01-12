@@ -3,6 +3,7 @@
 
 //Include necessary libraries
 #include <ESP8266WiFi.h>
+#include <Homie.h>
 #include <Effects.h>
 
 #ifdef __AVR__
@@ -48,6 +49,9 @@ int intervalSwitch = 500; //interval in which no new Switch is allowed
 int lastSwitch;
 
 void setup() {
+  Homie_setFirmware("torch", "1.2.0"); // The underscore is not a typo! See Magic bytes
+  Homie.setup();
+  
   Serial.begin(115200);
 
   delay(1000);
@@ -63,6 +67,7 @@ void setup() {
 WiFiClient client;
 
 void loop() {
+  Homie.loop();
   //Read input of client if availabel
   EffectChange = ReadClient(EffectChange);
 
