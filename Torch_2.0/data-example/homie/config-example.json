@@ -1,0 +1,15 @@
+{
+    "name": "RoomMonitoringWohnzimmer",
+    "device_id": "espraum1", 
+    "wifi": {
+      "ssid": "xxx",
+      "password": "xxx"
+    },
+    "mqtt": {
+      "host": "192.168.178.xx",
+      "port": 1883
+    },
+    "ota": {
+      "enabled": false
+    }
+}
