@@ -16,6 +16,8 @@ Effects strip = Effects(NumPixel, PixelPin, NEO_GRB + NEO_KHZ800);
 //Definition of HomieNode
 HomieNode EffectNode("EffectNode", "EffectNode", "Effect");
 HomieNode ColorNode("ColorNode", "ColorNode", "Color");
+HomieNode PowerNode("PowerNode","powerNode","Power");
+HomieNode RestartNode("RestartNode", "RestartNode","Restart");
 
 //Definition of possible effects and colors
 char* effectList[] = {"fade","cylon","twinkle", "twinkle random", "sparkle", "sparkle random", "color wipe", "rainbow cycle", "theater", "theater rainbow", "fire", "ice fire", "meteor rain", "rain", "marble", "heart beat"};
@@ -39,11 +41,13 @@ int SelectedNew[] = {random(0,NumberEffects),random(0,NumberColors)};    //initi
 bool EffectChange = 1;        //variable indication change in effect (0=no change, 1=change), initially one change necessary  
 int EffectLengthMax = 20;     //Length of longes effect-name in effectList
 
+bool powerOn = true;
+bool restartOn = true;
+
 //Definition of Switch
 #define PinSwitch D6
 int intervalSwitch = 500; //interval in which no new Switch is allowed
 int lastSwitch;
-
 
 //++++++++++++++++++++++++++++++++++++
 //Homie-Loop Functions
@@ -78,6 +82,22 @@ bool colorHandler(const HomieRange& range, const String& color){
   }
   EffectChange = 1;
   ColorNode.setProperty("color").send(color);
+
+  return true;
+}
+
+
+bool powerHandler(const HomieRange& range, const String& value){
+  if (value == "false"){
+    powerOn = false;
+    strip.clear();
+    strip.show();
+  } else {
+    powerOn = true;
+    EffectChange = 1;
+  }
+  Serial.println("PowerOn: " + String(powerOn));
+  PowerNode.setProperty("poweron").send(value);
 
   return true;
 }
@@ -210,6 +230,8 @@ void setup() {
   //Node.advertise("PropertyID").setName("PropertyName").setDatatype("datatype").setUnit("unit");
   EffectNode.advertise("effect").setName("Effect").setDatatype("String").settable(effectHandler);
   ColorNode.advertise("color").setName("Color").setDatatype("String").settable(colorHandler);
+  PowerNode.advertise("poweron").setName("PowerOn").setDatatype("String").settable(powerHandler);
+  RestartNode.advertise("restart").setName("Restart").setDatatype("String");
 
   Homie.setup();
 
@@ -220,7 +242,6 @@ void setup() {
 
   delay(1000);
 
-  
   //initialization of strip
   strip.begin();
   strip.setBrightness(20); //maximum 20 is possible, 25 should work as well, not sure
@@ -231,6 +252,14 @@ void loop() {
   //Read input via Homie/Dashboard
   Homie.loop();
   ArduinoOTA.handle();
+  
+  //get last state after restart
+  if (restartOn == true && Homie.isConfigured() && Homie.isConnected()){
+    RestartNode.setProperty("restart").send("true"); // send restart notice to node red
+    restartOn = false;
+    Serial.println("restart initialized");
+  }
+  
 
   //if no input was recived from homie, check switch
   if (EffectChange == 0 && millis()-lastSwitch > intervalSwitch){
@@ -238,21 +267,24 @@ void loop() {
 
        if (EffectChange == 1){
         lastSwitch = millis();
+        powerOn = true;
        }
   }
 
-  //new effect selected: replace effect and color in "Selected", initialize new effect if needed, reset "EffectChange"
-  if (EffectChange == 1){
-    Serial.println("EffectChange noticed");
-    Selected[0] = SelectedNew[0];
-    Selected[1] = SelectedNew[1];
-    EffectChange = 0;
-    strip.clear();
-    //Initialization
-    SelectEffect();
-  }
-  //client did not select anything new or no client is availabel: just update effect
-  else{
-    strip.Update();
+  if (powerOn == true){
+    //new effect selected: replace effect and color in "Selected", initialize new effect if needed, reset "EffectChange"
+    if (EffectChange == 1){
+      Serial.println("EffectChange noticed");
+      Selected[0] = SelectedNew[0];
+      Selected[1] = SelectedNew[1];
+      EffectChange = 0;
+      strip.clear();
+      //Initialization
+      SelectEffect();
+    }
+    //client did not select anything new or no client is availabel: just update effect
+    else{
+      strip.Update();
+    }
   }
 }
